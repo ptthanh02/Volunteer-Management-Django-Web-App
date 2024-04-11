@@ -37,7 +37,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'volunteer_management_app',
+    'crispy_forms',
+    'crispy_bootstrap5',
+    'django.contrib.humanize',
 ]
+
+CRISPY_TEMPLATE_PACK = 'bootstrap5'
+CRISPY_FAIL_SILENTLY = not DEBUG
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

@@ -62,7 +62,7 @@ py3.12_venv\Scripts\activate
 
 ### 1. Tạo database:
 ```bash
-python manage.py makemigrations volunteer_app
+python manage.py makemigrations volunteer_management_app
 ```
 
 ### 2. Migrate database:
@@ -81,7 +81,7 @@ python manage.py runserver
 ```
 ### 5. Chạy test case:
 ```bash
-python manage.py test volunteer_app
+python manage.py test volunteer_management_app
 ```
 
 ### 6. Mở shell:

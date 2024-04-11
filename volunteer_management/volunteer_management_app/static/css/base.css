@@ -1,0 +1,15 @@
+.gradient-custom {
+    /* fallback for old browsers */
+    background: #6a11cb;
+  
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: -webkit-linear-gradient(to right, rgba(82, 45, 218, 0.9), rgba(96, 139, 212, 0.9));
+  
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    /* background: linear-gradient(to right, rgba(106, 17, 203, 0.9), rgba(37, 117, 252, 0.9)); */
+    background: linear-gradient(135deg,rgb(55, 55, 189) 0%,rgb(91, 136, 215) 100%)
+}
+
+.nav-item {
+  margin: 0 5px;
+}

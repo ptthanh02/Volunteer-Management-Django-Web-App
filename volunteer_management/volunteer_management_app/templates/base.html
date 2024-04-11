@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- ... các thẻ meta và liên kết CSS khác ... -->
+    <title>Trang chủ | Hội tình nguyện T&B</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../static/css/base.css">
+</head>
+<body>
+    <header>
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-light gradient-custom">
+            <!-- Container wrapper -->
+            <div class="container-fluid">
+                <!-- Toggle button -->
+                <button class="navbar-toggler text-white"
+                        type="button"
+                        data-mdb-toggle="collapse"
+                        data-mdb-target="#navbarSupportedContent"
+                        aria-controls="navbarSupportedContent"
+                        aria-expanded="false"
+                        aria-label="Toggle navigation">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <!-- Collapsible wrapper -->
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <!-- Navbar brand -->
+                    <a class="navbar-brand mt-2 mt-lg-0" href="#">
+                        <img src="../static/images/logo.png"
+                             width="70"
+                             height="50"
+                             class="d-inline-block align-top"
+                             alt="">
+                    </a>
+                    <!-- Left links -->
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Dashboard</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Team</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Projects</a>
+                        </li>
+                    </ul>
+                    <!-- Left links -->
+                </div>
+                <!-- Collapsible wrapper -->
+                
+                <!-- Right elements -->
+                <div class="d-flex align-items-center">
+                    <a class="text-reset me-3" href="#">
+                        <i class="fa-solid fa-user" style="color: white;"></i>
+                    </a>
+                </div>
+                <!-- Right elements -->
+            </div>
+            <!-- Container wrapper -->
+        </nav>
+        <!-- Navbar -->
+    </header>
+    <main>
+        {% block content %}
+
+        {% endblock %}
+    </main>
+    <footer>
+    </footer>
+</body>
+</html>
+<script>
+    const toggleButton = document.querySelector('.navbar-toggler');
+    const collapsibleWrapper = document.querySelector('#navbarSupportedContent');
+    toggleButton.addEventListener('click', () => {
+        collapsibleWrapper.classList.toggle('collapse');
+        collapsibleWrapper.classList.toggle('show');
+        toggleButton.setAttribute('aria-expanded', !toggleButton.getAttribute('aria-expanded'));
+    });
+</script>
