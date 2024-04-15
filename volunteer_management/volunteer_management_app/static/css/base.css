@@ -8,9 +8,8 @@
   
     /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
     background: linear-gradient(to right, rgba(106, 17, 203, 0.9), rgba(37, 117, 252, 0.9));
-    /* background: linear-gradient(135deg,rgb(55, 55, 189) 0%,rgb(91, 136, 215) 100%); */
-    background-color: transparent;
-    backdrop-filter: blur(40px);
+    /* background-color: transparent;
+    backdrop-filter: blur(40px); */
     border-bottom: 2px solid rgba(0, 0, 0, 0.125);
   }
 
@@ -20,10 +19,18 @@
   /* font-family: 'Poppins', sans-serif */
   font-weight: 500;
   padding: 10px 0;
+  color: #e5e7eb;
 }
 
 .nav-item {
   margin: 0 10px;
+}
+
+.nav-link:hover {
+  color: #ffffff;
+  transition: color 0.5s ease;
+  transform: translate(0, -2px);
+  transition: transform 0.5s;
 }
 
 .navbar-active {
@@ -46,19 +53,18 @@ body {
 }
 
 main {
-  padding: 100px;
-  color: #fff;
+  color: #e5e7eb;
 }
 
 /*----------------- footer -----------------*/
 footer {
-  position: fixed;
+  position: bottom;
   bottom: 0;
   left: 0;
   width: 100%;
   background-color: #1f2024;
-  color: #fff;
-  padding: 20px 0;
+  color: #e5e7eb;
+  padding: 10px 0;
   text-align: center;
   font-size: 14px;
   font-weight: 500;
@@ -74,7 +80,7 @@ footer {
 
 .dark-mode {
   background-color: #111827; /* Màu nền tối */
-  color: #fff; /* Màu chữ sáng */
+  color: #e5e7eb; /* Màu chữ sáng */
 }
 
 /* .toggle {
@@ -143,7 +149,7 @@ footer {
 
 .btn-signup {
   background-color: #4338ca;
-  color: #fff;
+  color: #e5e7eb;
   border: none;
   padding: 10px 20px;
   border-radius: 25px;
@@ -153,7 +159,7 @@ footer {
 
 .btn-signup:hover {
   background-color: #392dbb;
-  color: #fff;
+  color: #e5e7eb;;
 }
 
 .btn-signup:focus {
@@ -207,4 +213,12 @@ footer {
   padding: 5px 10px;
   border-radius: 25px;
   transition: background-color 0.3s ease;
+}
+
+.search-btn:hover {
+  background-color: #f1f1f1;
+}
+
+.search-btn:focus {
+  box-shadow: none;
 }
