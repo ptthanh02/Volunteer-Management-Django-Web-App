@@ -1,0 +1,54 @@
+.modal-header{
+    background: linear-gradient(to right, rgba(106, 17, 203, 0.9), rgba(37, 117, 252, 0.9));
+    color: white;
+    padding: 10px 20px; 
+    display: flex;
+    justify-content: space-between;
+    font-weight: bolder;
+}
+
+.modal-body{
+    padding: 20px;
+    color: black;
+    border-radius: 20px;
+}
+
+.btn-submit-modal{
+    background-color: rgba(54, 114, 218, 0.9);
+    color: #e5e7eb;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    font-weight: bold;
+    float : right;
+}
+
+.btn-submit-modal:hover {
+    background-color: #4338ca;
+    color: #e5e7eb;;
+  }
+  
+.btn-submit-modal:focus {
+    box-shadow: none;
+}
+  
+.btn-submit-modal:active {
+    transform: scale(0.98); 
+}
+  
+.close{
+    background-color: #dc2121;
+    color: white;
+    border: none;
+    padding: 5px;
+    margin: 2px;
+    border-radius: 5px;
+    width: 33px;
+}
+.close:hover{
+    background-color: #b60000;
+    color: white;
+    transition: background-color 0.5s ease;
+}
+

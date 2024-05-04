@@ -1,0 +1,38 @@
+<div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="registerModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="registerModalLabel">Đăng Ký Tài Khoản</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" class="text-white">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="#" method="post">
+                    <div class="form-group">
+                        <label for="username">Tên đăng nhập:</label>
+                        <input type="text" class="form-control" id="username" name="username" placeholder="Nhập tên đăng nhập">
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Mật khẩu:</label>
+                        <input type="password" class="form-control" id="password" name="password" placeholder="Nhập mật khẩu">
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Nhập lại mật khẩu:</label>
+                        <input type="password" class="form-control" id="password_confirm" name="password_confirm" placeholder="Nhập lại mật khẩu">
+                    </div>
+                    <div class="form-group">
+                        <label for="name">Họ và tên:</label>
+                        <input type="text" class="form-control" id="name" name="name" placeholder="Nhập họ và tên">
+                    </div>
+                    <div class="form-group">
+                        <label for="Tuổi">Tuổi:</label>
+                        <input type="number" class="form-control" id="age" name="age" placeholder="Nhập tuổi">
+                    </div>
+                    <button type="submit" class="btn-submit-modal mt-3">Đăng ký</button>
+                    <p class="mt-4">Bạn đã có tài khoản? <a href="#" data-bs-toggle="modal" data-bs-target="#loginModal" data-bs-dismiss="modal">Đăng nhập</a></p>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
