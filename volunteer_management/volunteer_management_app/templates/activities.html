@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<link rel="stylesheet" href="../static/css/activities.css">
+<div class="container" style="padding-top: 120px; padding-bottom: 50px;">
+    <h2 style="padding-bottom: 30px;">Hoạt Động Tình Nguyện Của Bạn</h2>
+    <a class="text-reset" style="text-decoration: none;">
+        <div class ="search-box" id="search-box">
+            <input type="search" class="search-txt-custom" placeholder="Tìm kiếm" appearance="none">
+            <a class="search-btn">
+                <i class="fas fa-search"></i>
+            </a>
+        </div>
+    </a>
+    <nav style="padding-top: 30px;">
+      <ul class="nav custom-nav">
+        <li class="nav-item custom-nav-item">
+          <a href="#" class="nav-link custom-nav-link">Chưa Tham Gia (78)</a>
+        </li>
+        <li class="nav-item custom-nav-item">
+          <a href="#" class="nav-link custom-nav-link">Đã Tham Gia (16)</a>
+        </li>
+        <li class="nav-item custom-nav-item">
+          <a href="#" class="nav-link custom-nav-link">Đã Yêu Thích (34)</a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+{% endblock %}

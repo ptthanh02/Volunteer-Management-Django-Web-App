@@ -18,9 +18,9 @@ python -m venv py3.12_venv
 ```bash
 py3.12_venv\Scripts\activate 
 ```
-### 3. Cài đặt Django:
+### 3. Cài đặt các thư viện cần thiết:
 ```bash
-pip install django
+pip install -r requirements.txt
 ```
 ### 4. Tạo project mới:
 Tạo project Django mới với tên là `volunteer_management` tại thư mục hiện tại
