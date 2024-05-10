@@ -80,9 +80,13 @@
                              class="toggle-icon"
                         >
                     </button>
+                    {% if request.user.is_anonymous %}
                     <a class="text-reset me-3">
                         <button type="button" class="btn-signup" data-bs-toggle="modal" data-bs-target="#registerModal" href="#">Đăng ký</button>
                     </a>
+                    {% else %}
+                    
+                    {% endif %}
                 </div>
                 <!-- Right elements -->
             </div>
@@ -119,7 +123,41 @@
         </p>
     </footer>
 </html>
-<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+{% block script %}
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script>
+        // loginModal
+        $(document).ready(function() {
+        // Kiểm tra nếu có thông báo lỗi và mở lại modal
+        {% if show_login_form and messages %}
+            $('#loginModal').modal('show');
+        {% endif %}
+        });
+
+        $(document).ready(function () {
+            $("#loginModal").on("hidden.bs.modal", function (e) {
+                window.location.href = '#';
+            });
+        });
+
+        // registerModal
+        $(document).ready(function () {
+        {% if show_register_form and messages %}
+            $("#registerModal").modal("show");
+        {% endif %} 
+
+        {% if register_sucess and messages %}
+            $("#registerModal").modal("show");
+        {% endif %}
+        });
+
+        $(document).ready(function () {
+        $("#registerModal").on("hidden.bs.modal", function (e) {
+            window.location.href = '#';
+        });
+        });
+    </script>
+{% endblock %}
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
 // Thay đổi navbar khi cuộn trang

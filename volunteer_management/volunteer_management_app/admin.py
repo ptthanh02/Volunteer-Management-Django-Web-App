@@ -1,9 +1,10 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from .models import *
-from django.contrib.auth import get_user_model
-from django.contrib.auth.models import User
 from .forms import *
+from django.contrib.auth import get_user_model
+from django.contrib.auth.models import User, Group
+from django.utils.html import format_html
 
 def staff_users(self, obj):
     User = get_user_model()
@@ -19,7 +20,7 @@ def is_event_organizer(user, event):
         return False
 
 class VolunteerEventPostAdmin(admin.ModelAdmin):
-    list_display = ['name', 'start_date', 'end_date', 'location', 'hours', 'organizer', 'status']
+    list_display = ['name', 'start_date', 'end_date', 'location', 'hours', 'organizer', 'category', 'status']
     list_filter = ['start_date']
     search_fields = ['name', 'location', 'description']
     ordering = ['-start_date']
@@ -35,11 +36,13 @@ class VolunteerEventPostAdmin(admin.ModelAdmin):
         return form
     
     fieldsets = (
-        ('Thông tin sự kiện', {'fields': ('name', 'start_date', 'end_date', 'location', 'description', 'hours', 'organizer', 'status')}),
+        ('Thông tin cơ bản', {'fields': ('name','organizer', 'category', 'status')}),
+        ('Thời gian và địa điểm', {'fields': ('start_date', 'end_date', 'location')}),
+        ('Chi tiết sự kiện', {'fields': ('description', 'hours')}),
     )
 
 class CustomUserAdmin(UserAdmin):
-    list_display = ['username', 'name', 'age', 'email', 'phone', 'hours_worked', 'is_active']
+    list_display = ['username', 'name', 'age', 'email', 'phone', 'hours_worked', 'get_number_of_events_attended', 'is_active', 'thumbnail']
     list_filter = ['is_active']
     
     def get_queryset(self, request):
@@ -48,7 +51,7 @@ class CustomUserAdmin(UserAdmin):
     
     fieldsets = (
         ('Thông tin tài khoản', {'fields': ('username', 'password')}),
-        ('Thông tin cá nhân', {'fields': ('name', 'age', 'email', 'phone', 'address',  'skills', 'hours_worked')}),
+        ('Thông tin cá nhân', {'fields': ('name', 'age', 'avatar',  'email', 'phone', 'address',  'skills', 'hours_worked')}),
         ('Quyền hạn', {'fields': ('is_active',)}),
         ('Ngày đăng nhập cuối', {'fields': ('last_login',)}),
     )
@@ -61,9 +64,20 @@ class CustomUserAdmin(UserAdmin):
         ),
     )
     filter_horizontal = ()
+    
+    def thumbnail(self, object):
+        if object.avatar:
+            return format_html('<img src="{}" width="30" style="border-radius:50%;">'.format(object.avatar.url))
+        return 'No Image'
+
+    thumbnail.short_description = 'Avatar'
+    
+    def get_number_of_events_attended(self, obj):
+        return obj.events_attended.count()
+    get_number_of_events_attended.short_description = 'Số sự kiện đã tham gia'
         
 class AdminUserAdmin(UserAdmin):
-    list_display = ['username', 'name', 'email' ,'is_superuser', 'is_active']
+    list_display = ['username', 'name', 'age', 'email', 'phone' ,'is_superuser', 'is_active' ,'get_number_of_events_hosted']
     list_filter = ['is_superuser', 'is_active']
     search_fields = ['username', 'name', 'email']
 
@@ -73,8 +87,8 @@ class AdminUserAdmin(UserAdmin):
 
     fieldsets = (
         ('Thông tin tài khoản', {'fields': ('username', 'password')}),
-        ('Thông tin cá nhân', {'fields': ('name', 'age', 'email', 'phone', 'address',  'skills', 'hours_worked')}),
-        ('Quyền hạn', {'fields': ('is_staff', 'is_active')}),
+        ('Thông tin cá nhân', {'fields': ('name', 'age', 'avatar', 'email', 'phone', 'address',  'skills', 'hours_worked')}),
+        ('Quyền hạn', {'fields': ('is_active', 'is_superuser')}),
         ('Ngày đăng nhập cuối', {'fields': ('last_login',)}),
     )
     search_fields = ('username', 'name', 'age', 'email', 'phone', 'address', 'skills')
@@ -87,20 +101,24 @@ class AdminUserAdmin(UserAdmin):
     )
     filter_horizontal = ()
     
+    def get_number_of_events_hosted(self, obj):
+        return VolunteerEventPost.objects.filter(organizer=obj).count()
+    get_number_of_events_hosted.short_description = 'Số sự kiện đã tổ chức'
+    
 class EventReportAdmin(admin.ModelAdmin):
     list_display = ['event', 'report_date', 'participants_count', 'author']
     list_filter = ['event', 'report_date']
     search_fields = ['event__name', 'report_content']
     
     fieldsets = (
-        (None, {
-            'fields': ('event', 'participants_count')
+        ('Sự kiện báo cáo', {
+            'fields': ('event',)
         }),
-        ('Nội dung báo cáo', {
-            'fields': ('report_content',)
+        ('Chi tiết báo cáo', {
+            'fields': ('report_content', 'participants_count')
         }),
     )
-    
+        
     def get_queryset(self, request):
         qs = super().get_queryset(request)
         if request.user.is_superuser:
@@ -114,8 +132,13 @@ class EventReportAdmin(admin.ModelAdmin):
 
     # def has_delete_permission(self, request, obj=None):
     #     return False
-
+    
+admin.site.site_header = 'Tổ chức tình nguyện IUH'
+admin.site.site_title = 'Quản lý tình nguyện viên IUH'
+admin.site.index_title = 'Hệ thống quản lý tình nguyện viên IUH'
+# admin.site.unregister(Group)
 admin.site.register(EventReport, EventReportAdmin)
 admin.site.register(VolunteerEventPost, VolunteerEventPostAdmin)
 admin.site.register(CustomUser, CustomUserAdmin)
 admin.site.register(AdminUser, AdminUserAdmin)
+

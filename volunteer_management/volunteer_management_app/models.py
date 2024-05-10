@@ -11,6 +11,7 @@ from django.core.exceptions import ValidationError
 from django_ckeditor_5.fields import CKEditor5Field
 from datetime import timedelta
 from django.contrib.auth import get_user
+from django.conf import settings
 
 class VolunteerEventPost(models.Model):
     name = models.CharField(_('Tên sự kiện'), max_length=50, null=False, blank=False)
@@ -31,6 +32,19 @@ class VolunteerEventPost(models.Model):
     ]
     status = models.CharField(
         _('Trạng thái'), max_length=20, choices=STATUS_CHOICES, default='planned'
+    )
+    CATEGORY_CHOICES = [
+        ('education', _('Giáo dục')),
+        ('environment', _('Môi trường')),
+        ('health', _('Y tế')),
+        ('community', _('Cộng đồng')),
+        ('other', _('Khác')),
+    ]
+    category = models.CharField(
+        _('Loại sự kiện'),
+        max_length=20,
+        choices=CATEGORY_CHOICES,
+        default='other',
     )
     
     def update_status(self):
@@ -107,7 +121,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     USERNAME_FIELD = 'username'
     objects = CustomUserManager()
     
-    avatar = models.ImageField(_('Ảnh đại diện'), upload_to='avatars/', null=True, blank=True)
+    avatar = models.ImageField(_('Ảnh đại diện'), upload_to='avatars/', null=True, blank=True, default=f'{settings.STATIC_URL}default_avatar.png')
     name = models.CharField(_('Tên'), max_length=30, null=False, blank=False)
     age = models.IntegerField(_('Tuổi'), null=True, blank=True)
     email = models.EmailField(_('Email'), null=True, blank=True, unique=True)
@@ -137,7 +151,7 @@ class AdminUser(CustomUser):
 class EventReport(models.Model):
     event = models.ForeignKey(VolunteerEventPost, on_delete=models.CASCADE, related_name='reports', verbose_name=_('Sự kiện'), help_text=_('Chỉ có thể báo cáo những sự kiện đã kết thúc mà đã bạn tổ chức.'), null=False, blank=False)
     report_date = models.DateField(_('Ngày báo cáo'), auto_now_add=True)
-    participants_count = models.PositiveIntegerField(_('Số người tham gia'), default=0)
+    participants_count = models.PositiveIntegerField(_('Số người tham gia'), default=0, help_text=_('Số người thực sự đã tham gia sự kiện này. (Có thể biết qua điểm danh)'))  
     report_content = CKEditor5Field(_('Nội dung báo cáo'), config_name='extends')
     author = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='reports', verbose_name=_('Người báo cáo'))
        

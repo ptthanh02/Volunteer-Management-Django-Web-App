@@ -20,10 +20,6 @@ from django.views.generic.base import RedirectView
 from django.conf.urls.static import static
 from django.conf import settings
 
-# admin.site.site_header = 
-# admin.site.site_title = 
-# admin.site.index_title = 
-
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('volunteer_management_app.urls')),

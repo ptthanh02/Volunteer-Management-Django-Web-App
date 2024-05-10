@@ -2,35 +2,68 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="registerModalLabel">Đăng Ký Tài Khoản</h5>
+                <h5 class="modal-title" id="registerModalLabel">Đăng Ký Tài Khoản Tình Nguyện Viên</h5>
                 <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true" class="text-white">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <form action="#" method="post">
-                    <div class="form-group">
+                <form action="{% url 'user_register' %}" method="POST">
+                    {% csrf_token %} 
+                    {% comment %} Kiểm tra nếu có lỗi thì hiển thị thông báo lỗi {% endcomment %}
+                    {% if show_register_form %}
+                        {% if messages %}
+                            <div class="alert alert-danger">
+                                {% for message in messages %}
+                                    {{ message }}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    {% endif %}
+                    {% comment %} Kiểm tra nếu đăng ký thành công thì hiển thị thông báo thành công {% endcomment %}
+                    {% if register_sucess %}
+                        {% if messages %}
+                            <div class="alert alert-success">
+                                {% for message in messages %}
+                                    {{ message }}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    {% endif %}
+                    <div class="mb-3">
                         <label for="username">Tên đăng nhập:</label>
                         <input type="text" class="form-control" id="username" name="username" placeholder="Nhập tên đăng nhập">
                     </div>
-                    <div class="form-group">
-                        <label for="password">Mật khẩu:</label>
-                        <input type="password" class="form-control" id="password" name="password" placeholder="Nhập mật khẩu">
+                    <div class="mb-3">
+                        <label for="password1">Mật khẩu:</label>
+                        <input type="password" class="form-control" id="password1" name="password1" placeholder="Nhập mật khẩu">
                     </div>
-                    <div class="form-group">
-                        <label for="password">Nhập lại mật khẩu:</label>
-                        <input type="password" class="form-control" id="password_confirm" name="password_confirm" placeholder="Nhập lại mật khẩu">
+                    <div class="mb-3">
+                        <label for="password2">Nhập lại mật khẩu:</label>
+                        <input type="password" class="form-control" id="password2" name="password2" placeholder="Nhập lại mật khẩu">
                     </div>
-                    <div class="form-group">
-                        <label for="name">Họ và tên:</label>
-                        <input type="text" class="form-control" id="name" name="name" placeholder="Nhập họ và tên">
+                    <div class="mb-3 row">
+                        <div class="col-6" style="padding-right: 0;">
+                            <label for="name">Họ tên:</label>
+                            <input type="text" class="form-control" id="name" name="name" placeholder="Nhập họ tên">
+                        </div>
+                        <div class="col-6">
+                            <label for="age">Tuổi:</label>
+                            <input type="number" class="form-control" id="age" name="age" placeholder="Nhập tuổi">
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="Tuổi">Tuổi:</label>
-                        <input type="number" class="form-control" id="age" name="age" placeholder="Nhập tuổi">
+                    <div class="mb-3 row">
+                        <div class="col-6" style="padding-right: 0;">
+                            <label for="email">Email:</label>
+                            <input type="email" class="form-control" id="email" name="email" placeholder="Nhập email">
+                        </div>
+                        <div class="col-6" >
+                            <label for="phone">Số điện thoại:</label>
+                            <input type="text" class="form-control" id="phone" name="phone" placeholder="Nhập số điện thoại">
+                        </div>
                     </div>
-                    <button type="submit" class="btn-submit-modal mt-3">Đăng ký</button>
-                    <p class="mt-4">Bạn đã có tài khoản? <a href="#" data-bs-toggle="modal" data-bs-target="#loginModal" data-bs-dismiss="modal">Đăng nhập</a></p>
+                    <button type="submit" class="btn-submit-modal">Đăng ký</button>
+                    <p class="mt-3">Bạn đã có tài khoản? <a href="#" data-bs-toggle="modal" data-bs-target="#loginModal" data-bs-dismiss="modal">Đăng nhập</a></p>
                 </form>
             </div>
         </div>
