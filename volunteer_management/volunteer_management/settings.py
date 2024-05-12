@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -45,6 +46,7 @@ INSTALLED_APPS = [
     'django_ckeditor_5',
 ]
 
+# Crispy forms configuration
 CRISPY_TEMPLATE_PACK = 'bootstrap5'
 CRISPY_FAIL_SILENTLY = not DEBUG
 
@@ -141,6 +143,107 @@ CKEDITOR_5_CONFIGS = {
           'reversed': 'true',
       }
   }
+}
+
+# Jazzmin configuration
+
+JAZZMIN_SETTINGS = {
+    # Tiêu đề của trang quản trị
+    "site_title": "Quản lý Sự kiện Tình nguyện",
+    "site_header": "Quản lý Sự kiện Tình nguyện",
+    "site_brand": "Quản Lý Tình Nguyện IUH",
+
+    # Logo (cần đặt file logo trong thư mục static)
+    "site_logo": "images/Logo-IUH.jpg",
+
+    # Thông báo chào mừng
+    "welcome_sign": "Chào mừng đến với trang quản trị tình nguyện IUH",
+            
+    # Các model để tìm kiếm
+    "search_model": [
+        "volunteer_management_app.CustomUser",
+        "volunteer_management_app.VolunteerEventPost",
+        "volunteer_management_app.EventReport",
+    ],
+
+    # Không sử dụng avatar cho người dùng
+    "user_avatar": "avatar",  # Default: "user
+
+    # Liên kết menu trên cùng
+    "topmenu_links": [
+        {"name": "Trang quản trị", "url": "admin:index", "permissions": ["volunteer_management_app.view_customuser"]},
+        {"name": "Trang chủ Website", "url": "/", "new_window": True},
+    ],
+
+    # Liên kết menu người dùng
+    "usermenu_links": [
+
+    ],
+
+    # Hiển thị sidebar
+    "show_sidebar": True,
+    "navigation_expanded": True,
+
+    # Thứ tự hiển thị các ứng dụng và model trong sidebar
+    "order_with_respect_to": [
+        "volunteer_management_app",
+        "auth",
+        "volunteer_management_app.customuser",
+        "volunteer_management_app.adminuser",
+        "volunteer_management_app.volunteereventpost",
+        "volunteer_management_app.eventreport",
+    ],
+
+    # Định nghĩa các icon cho model
+    "icons": {
+        "dashboard": "fas fa-tachometer-alt",
+        "volunteer_management_app.adminuser": "fas fa-user-tie",
+        "volunteer_management_app.customuser": "fas fa-user",
+        "volunteer_management_app.volunteereventpost": "fas fa-calendar-check",
+        "volunteer_management_app.eventreport": "fas fa-file-alt",
+        "auth.Group": "fas fa-users",
+    },
+
+    # Định dạng trang chi tiết (change view)
+    "changeform_format": "single",
+    "show_ui_builder": True,
+    
+    # Cấu hình CSS
+    "custom_css": "css/admin.css",
+    
+}
+
+JAZZMIN_UI_TWEAKS = {
+    "navbar_small_text": False,
+    "footer_small_text": False,
+    "body_small_text": False,
+    "brand_small_text": True,
+    "brand_colour": False,
+    "accent": "accent-lightblue",
+    "navbar": "navbar-light",
+    "no_navbar_border": False,
+    "navbar_fixed": False,
+    "layout_boxed": False,
+    "footer_fixed": False,
+    "sidebar_fixed": False,
+    "sidebar": "sidebar-dark-lightblue",
+    "sidebar_nav_small_text": False,
+    "sidebar_disable_expand": False,
+    "sidebar_nav_child_indent": False,
+    "sidebar_nav_compact_style": False,
+    "sidebar_nav_legacy_style": False,
+    "sidebar_nav_flat_style": False,
+    "theme": "default",
+    "dark_mode_theme": None,
+    "button_classes": {
+        "primary": "btn-primary",
+        "secondary": "btn-secondary",
+        "info": "btn-info",
+        "warning": "btn-warning",
+        "danger": "btn-danger",
+        "success": "btn-success"
+    },
+    "actions_sticky_top": True
 }
   
 MIDDLEWARE = [

@@ -176,9 +176,13 @@ footer {
   background-color: #fff;
   border-radius: 25px;
   padding: 5px 10px;
-  margin-right: 20px;
+  padding-top: 6px;
   border: none;
   transition: box-shadow 0.3s ease;
+  display: flex;
+  align-items: center;
+  margin-right: 20px;
+  width: 550px;
 }
 
 .search-box:hover {
@@ -196,7 +200,7 @@ footer {
   padding: 5px 10px;
   border: none;
   outline: none;
-  width: 200px;
+  width: 500px;
 }
 
 .search-txt:hover {
@@ -221,4 +225,68 @@ footer {
 
 .search-btn:focus {
   box-shadow: none;
+}
+/* ------------------- Animated Dropdown ------------------- */
+.dropdown:hover .dropdown-menu {
+  display: block;
+}
+
+.dropdown-menu {
+  display: none;
+  animation: fadeInDown 0.3s ease-in-out;
+  right: 0;
+}
+
+@keyframes fadeInDown {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.user-avatar-container {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-top: 2px;
+  border: 2px solid #00f94b;
+}
+
+.avatar-img {
+  width: 100%;
+  height: auto;
+}
+
+.user-name {
+  margin-right: 10px;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out; 
+}
+
+.dropdown:hover .user-name {
+  opacity: 1;
+}
+
+.dropdown-menu a {
+  color: #2e2b2b;
+  text-decoration: none;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-weight: 500;
+  padding: 10px 20px;
+  display: block;
+}
+
+.dropdown-menu a:hover {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-weight: 500;
+  background-color: #4376d0;
+  color: #fff;
+  /* transform: translateX(5px); */
+  transform: scale(0.97);
+  transition: transform 0.3s ease;
 }

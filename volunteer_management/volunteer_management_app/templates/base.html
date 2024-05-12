@@ -8,15 +8,18 @@
     <link href="https://getbootstrap.com/docs/5.2/assets/css/docs.css" rel="stylesheet">
     <!-- Font Awesome 6.5.2 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <!-- Animate CSS 4.1.1 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="../static/css/base.css">
     <link rel="stylesheet" href="../static/css/modal.css">
+    <link rel="shortcut icon" href="../static/images/Logo-IUH.jpg" type="image/x-icon">
 </head>
 <body>
     <header>
         <!-- Navbar -->
         <nav class="navbar navbar-expand-lg navbar-dark fixed-top gradient-custom">
-            <div class="container-fluid">
+            
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -40,30 +43,27 @@
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         {% if request.path == '/trang-chu/' %}
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href={% url 'homepage' %}>Trang chủ</a>
+                            <a class="nav-link active" aria-current="page" href={% url 'homepage' %}><i class="fas fa-home"></i> Trang chủ</a>
                         </li>
                         {% else %}
                         <li class="nav-item">
-                            <a class="nav-link" href={% url 'homepage' %}>Trang chủ</a>
+                            <a class="nav-link" href={% url 'homepage' %}><i class="fas fa-home"></i> Trang chủ</a>
                         </li>
                         {% endif %}
                         {% if request.path == '/hoat-dong/' %}
                         <li class="nav-item">
-                            <a class="nav-link active" href={% url 'activities' %}>Hoạt động</a>
+                            <a class="nav-link active" href={% url 'activities' %}><i class="fas fa-tasks"></i> Hoạt động</a>
                         </li>
                         {% else %}
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'activities' %}">Hoạt động</a>
+                            <a class="nav-link" href="{% url 'activities' %}"><i class="fas fa-tasks"></i> Hoạt động</a>
                         </li>
                         {% endif %}
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Quyên góp</a>
+                            <a class="nav-link" href="#"><i class="fas fa-hand-holding-heart"></i> Quyên góp</a>
                         </li>
                     </ul>
                     <!-- Left links -->
-                </div>
-                <!-- Right elements -->
-                <div class="d-flex align-items-center" style="padding-right: 64px; margin-right: 55px;">
                     <a class="text-reset" style="text-decoration: none;">
                         <div class ="search-box" id="search-box">
                             <input type="search" class="search-txt" placeholder="Tìm kiếm" appearance="none">
@@ -72,23 +72,37 @@
                             </a>
                         </div>
                     </a>
-                    <button class="toggle-button text-reset me-3" id="toggle-mode">
-                        <img src="../static/images/moon.png"
-                             width="25"
-                             height="25"
-                             alt=""
-                             class="toggle-icon"
-                        >
-                    </button>
-                    {% if request.user.is_anonymous %}
-                    <a class="text-reset me-3">
-                        <button type="button" class="btn-signup" data-bs-toggle="modal" data-bs-target="#registerModal" href="#">Đăng ký</button>
-                    </a>
-                    {% else %}
-                    
-                    {% endif %}
                 </div>
-                <!-- Right elements -->
+            {% if request.user.is_anonymous %}
+            <a class="text-reset" style = "padding-top: 2px;">
+                <button type="button" class="btn-signup" data-bs-toggle="modal" data-bs-target="#registerModal" href="#">Đăng ký</button>
+            </a>
+            {% else %}
+            <span class="user-name">{{ request.user.name }}</span>
+            <div class="dropdown">
+                <div class="user-info" data-bs-display="static" aria-expanded="false">
+                    <div class="user-avatar-container">
+                        <img src="{{ request.user.avatar.url }}" alt="Avatar" class="avatar-img">
+                    </div>
+                </div>
+                <ul class="dropdown-menu animate__animated animate__fadeInDown dropdown-menu-click-disabled">
+                    <li><a class="dropdown-item" href="#"><i class="fas fa-user"></i> Thông tin cá nhân</a></li>
+                    <li><a class="dropdown-item" href="#"><i class="fas fa-cog"></i> Đổi mật khẩu</a></li>
+                    <li><a class="dropdown-item" href="{% url 'user_logout' %}"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a></li>
+                    {% comment %} <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="#"><i class="fas fa-cog"></i> Cài đặt</a></li> {% endcomment %}
+                </ul>
+            </div>
+            {% endif %}
+            <div style="padding-right: 20px; padding-left: 12px;">
+                <button class="toggle-button text-reset me-3" id="toggle-mode" >
+                    <img src="../static/images/moon.png"
+                        width="25"
+                        height="25"
+                        alt=""
+                        class="toggle-icon"
+                    >
+                </button>
             </div>
         </nav>
         <!-- Navbar -->
@@ -198,4 +212,17 @@ toggleModeButton.addEventListener('click', function() {
         currentMode = 'light-mode';
       }
 });
+
+// Hiển thị tên người dùng khi rê chuột vào dropdown
+
+const dropdown = document.querySelector('.dropdown');
+const userName = document.querySelector('.user-name');
+
+dropdown.addEventListener('mouseenter', () => {
+  userName.style.opacity = '1'; 
+});
+
+dropdown.addEventListener('mouseleave', () => {
+  userName.style.opacity = '0'; 
+})
 </script>
