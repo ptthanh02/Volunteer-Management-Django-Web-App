@@ -10,12 +10,60 @@ from django.contrib import messages
 from datetime import datetime
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 import re
+from django.views.decorators.http import require_POST
 
 def homepage(request):
-    return render(request, 'homepage.html')
+    upcoming_events = VolunteerEventPost.objects.filter(
+        status='planned',
+        start_date__gte=timezone.now()
+    ).order_by('start_date')[:3]
+
+    for event in upcoming_events:
+        event.status_display = event.get_status_display()
+
+    context = {
+        'upcoming_events': upcoming_events
+    }
+
+    return render(request, 'homepage.html', context)
 
 def activities(request):
-    return render(request, 'activities.html')
+    event_posts = VolunteerEventPost.objects.all()
+    user = request.user
+
+    if user.is_authenticated:
+        user_event_relations = UserEventRelation.objects.filter(user=user, relation_type='liked')
+        liked_event_ids = [relation.event.id for relation in user_event_relations]
+
+        for event in event_posts:
+            event.liked = event.id in liked_event_ids
+
+    return render(request, 'activities.html', {'event_posts': event_posts})
+
+@require_POST
+@login_required
+def like_event(request):
+    event_id = request.POST.get('event_id')
+    event = VolunteerEventPost.objects.get(id=event_id)
+    user = request.user
+
+    relation, created = UserEventRelation.objects.get_or_create(
+        user=user,
+        event=event,
+        defaults={'relation_type': 'liked'}
+    )
+
+    if created:
+        event.likes += 1
+        liked = True
+    else:
+        relation.delete()
+        event.likes -= 1
+        liked = False
+
+    event.save()
+
+    return JsonResponse({'likes': event.likes, 'liked': liked})
 
 def user_login(request):
     show_login_form = True # to show login form 
@@ -116,20 +164,6 @@ def user_register(request):
         return render(request, 'homepage.html', {'register_sucess': register_sucess, 'show_register_form': show_register_form})
     else:
         return render(request, 'homepage.html', {'show_register_form': show_register_form})
-
-# @login_required
-# def add_comment(request, event_id):
-#     event = get_object_or_404(VolunteerEvent, id=event_id)
-#     if request.method == 'POST':
-#         content = request.POST.get('content')
-#         Comment.objects.create(event=event, user=request.user, content=content)
-#     return redirect('event_detail', event_id=event.id)
-
-# @login_required
-# def register_event(request, event_id):
-#     event = get_object_or_404(VolunteerEvent, id=event_id)
-#     event.register_attendee(request.user)
-#     return redirect('event_detail', event_id=event.id)
 
 # for ckeditor-5 image upload
 def custom_upload_function(request):

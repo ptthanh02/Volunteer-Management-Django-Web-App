@@ -12,9 +12,10 @@ from django_ckeditor_5.fields import CKEditor5Field
 from datetime import timedelta
 from django.contrib.auth import get_user
 from django.conf import settings
+from functools import cached_property
 
 class VolunteerEventPost(models.Model):
-    name = models.CharField(_('Tên sự kiện'), max_length=50, null=False, blank=False)
+    name = models.CharField(_('Tên sự kiện'), max_length=500, null=False, blank=False)
     start_date = models.DateTimeField(_('Ngày tổ chức'), null=False, blank=False)
     end_date = models.DateTimeField(_('Ngày kết thúc'), null=False, blank=False)
     location = models.CharField(_('Địa điểm'), max_length=100, null=False, blank=False)
@@ -147,19 +148,19 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     
     @property
     def viewed_events(self):
-        return self.event_relations.filter(relation_type=1).values_list('event', flat=True)
+        return self.event_relations.filter(relation_type=1).values_list('event')
 
-    @property
+    @cached_property
     def liked_events(self):
         return self.event_relations.filter(relation_type=2).values_list('event', flat=True)
 
     @property
     def events_attended(self):
-        return self.event_relations.filter(relation_type=3).values_list('event', flat=True)
+        return self.event_relations.filter(relation_type=3).values_list('event')
 
     @property
     def viewed_reports(self):
-        return self.event_relations.filter(relation_type=4).values_list('event_report', flat=True)
+        return self.event_relations.filter(relation_type=4).values_list('event_report')
 
     def __str__(self):
         return self.name

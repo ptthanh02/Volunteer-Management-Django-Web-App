@@ -12,8 +12,7 @@
 } 
 
 .custom-nav-link {
-  color: rgba(255,255,255,0.55);
-
+  color: #464c58;
   text-decoration: none;
   position: relative;
 }
@@ -29,7 +28,7 @@
   transition: background-color 0.3s ease;
 }
 .custom-nav-link:hover {
-  color: #fff;
+  color: #dbba57;
   transition: color 0.5s ease;
   transform: none;
 }
@@ -40,22 +39,95 @@
   height: 3px;
 }
 
-/* ----------------- search bar ----------------- */
-
-.search-txt-custom {
-  background-color: #fff;
-  border-radius: 25px;
-  padding: 5px 10px;
-  border: none;
-  outline: none;
-  width: 1215px;
+.custom-nav-link.active {
+  color: #e0a362 !important;
 }
 
-.search-txt-custom:hover {
-  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+/* ----------------- post ----------------- */
+
+.card {
+  max-width: 450px;
+  border: 2px solid #ccc;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.card img {
+  width: 100%;
+  height: 400px;
+  object-fit: cover;
+}
+
+.card-content {
+  padding: 20px;
+}
+
+.card-content h3 {
+  margin-top: 0;
+}
+
+.card-content p i {
+  margin-right: 10px;
+}
+
+h5.card-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* Số dòng muốn hiển thị */
+  -webkit-box-orient: vertical;
+  max-height: 2.4em; /* Điều chỉnh chiều cao tùy ý */
+  line-height: 1.2; /* Điều chỉnh line-height tùy ý */
+  margin-bottom: 15px; /* Khoảng cách margin bạn muốn */
+}
+
+.short-description{
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 8; /* Số dòng muốn hiển thị */
+  -webkit-box-orient: vertical;
+  max-height: 14em; /* Điều chỉnh chiều cao tùy ý */
+  line-height: 1.3; /* Điều chỉnh line-height tùy ý */
+  margin-bottom: 10px; /* Khoảng cách margin bạn muốn */
+}
+
+.btn-detail-post{
+  background-color: #dbba57;
+  color: #ffffff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 25px;
+  transition: background-color 0.3s ease;
+  font-weight: bold;
+  float : right;
+  margin-bottom: 15px;
+}
+
+.btn-detail-post:hover {
+  background-color: #d4a03b;
+  color: #ffffff;
+}
+
+.btn-detail-post:focus {
+  box-shadow: none;
+}
+
+.btn-detail-post:active {
+  transform: scale(0.98); 
+}
+
+.btn-interact {
+  background-color: #dbba57;
+  color: #ffffff;
+  border-radius: 50%;
+  padding: 10px;
+  cursor: pointer;
   transition: box-shadow 0.3s ease;
 }
 
-.search-txt-custom:focus {
-  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+.btn-interact:active {
+  transform: scale(0.98);
 }
+

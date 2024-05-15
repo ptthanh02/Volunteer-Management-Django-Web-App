@@ -1,29 +1,117 @@
 {% extends 'base.html' %}
-
 {% block content %}
-<link rel="stylesheet" href="../static/css/activities.css">
-<div class="container" style="padding-top: 120px; padding-bottom: 50px;">
-    <h2 style="padding-bottom: 30px;">Hoạt Động Tình Nguyện Của Bạn</h2>
-    <a class="text-reset" style="text-decoration: none;">
-        <div class ="search-box" id="search-box">
-            <input type="search" class="search-txt-custom" placeholder="Tìm kiếm" appearance="none">
-            <a class="search-btn">
-                <i class="fas fa-search"></i>
-            </a>
-        </div>
-    </a>
-    <nav style="padding-top: 30px;">
+<link rel="stylesheet" href="../static/css/activities.css" />
+<div class="container" style="padding-top: 90px; padding-bottom: 50px">
+   <h2 style="color: #dbba57" class="text-center mb-4 observe-slide-up">
+      Hoạt Động Tình Nguyện Của Bạn
+   </h2>
+   <div class="input-group mb-4">
+      <input
+         type="text"
+         class="form-control"
+         placeholder="Tìm kiếm sự kiện"
+         id="searchInput"
+         />
+      <div class="input-group-append">
+         <button class="btn btn-primary" type="button" id="searchButton">
+         Tìm kiếm
+         </button>
+      </div>
+   </div>
+   <nav style="padding-top: 30px; padding-bottom: 50px">
       <ul class="nav custom-nav">
-        <li class="nav-item custom-nav-item">
-          <a href="#" class="nav-link custom-nav-link">Chưa Tham Gia (78)</a>
-        </li>
-        <li class="nav-item custom-nav-item">
-          <a href="#" class="nav-link custom-nav-link">Đã Tham Gia (16)</a>
-        </li>
-        <li class="nav-item custom-nav-item">
-          <a href="#" class="nav-link custom-nav-link">Đã Yêu Thích (34)</a>
-        </li>
+         <li class="nav-item custom-nav-item">
+            <a href="#" class="nav-link custom-nav-link">Chưa Tham Gia (78)</a>
+         </li>
+         <li class="nav-item custom-nav-item">
+            <a href="#" class="nav-link custom-nav-link">Đã Tham Gia (16)</a>
+         </li>
+         <li class="nav-item custom-nav-item">
+            <a href="#" class="nav-link custom-nav-link">Đã Yêu Thích (34)</a>
+         </li>
       </ul>
-    </nav>
-  </div>
+   </nav>
+   <div class="row">
+      {% for event in event_posts %}
+      <div class="col col-md-4 mb-4">
+         <div class="card">
+            <img src="{{ event.cover.url }}" alt="{{ event.name }}" style="object-fit: cover;">
+            <div class="card-content">
+               <div class="row">
+                  <h5 class="card-title">{{ event.name }}</h5>
+                  <div class="col-5">
+                     <p><i class="fa-solid fa-calendar-days"></i> {{ event.start_date|date:"d/m/Y" }}</p>
+                     <hr>
+                     <i class="fas fa-users"></i> {{ event.current_participants }}/{{ event.max_participants }}</p>
+                     <hr>
+                     <p><i class="fa-solid fa-location-dot"></i> {{ event.location }}</p>
+                  </div>
+                  <div class="col-1" style="padding: 0; width: 12px;">
+                     <div class="vl"></div>
+                  </div>
+                  <div class="col-6" style="padding-left: 0;"> 
+                     <div class="short-description">
+                        <p>
+                           {{ event.description|striptags|truncatewords:100 }}
+                        </p>
+                     </div>
+                  </div>
+                  <div class="banner-footer" style="padding-top: 10px;">
+                     <button type="button" class="btn-detail-post" href="#">Xem Chi Tiết</button>
+                     <button type="button" class="btn-detail-post shareBtn" id="shareBtn"style="margin-right: 88px; margin-left: 3px;">
+                        {{ event.shares }}
+                        <i class="fa-solid fa-share-nodes"></i>
+                     </button>
+                     <button type="button" class="btn-detail-post likeBtn" id="likeBtn" data-event-id="{{ event.id }}">
+                        <span class="likes-count">{{ event.likes }}</span>
+                        {% if event.liked %}
+                        <i class="fa-solid fa-heart"></i>
+                        {% else %}
+                        <i class="fa-regular fa-heart"></i>
+                        {% endif %}
+                     </button>
+                  </div>
+               </div>
+            </div>
+        </div>
+      </div>
+      
+         {% empty %}
+         <h4 class="text-center mb-4 observe-slide-up">Hiện không có sự kiện nào sắp diễn ra. <i class="far fa-sad-tear"></i></h4>
+         {% endfor %}
+      </div>
+
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+   $(document).ready(function() {
+      $('.likeBtn').click(function() {
+         var eventId = $(this).data('event-id');
+         var likeBtn = $(this);
+         var likesCount = likeBtn.find('.likes-count');
+         var heartIcon = likeBtn.find('.fa-heart');
+         console.log(eventId);
+         $.ajax({
+            url: '{% url 'like_event' %}',
+            type: 'POST',
+            data: {
+                  'event_id': eventId,
+                  'csrfmiddlewaretoken': '{{ csrf_token }}'
+            },
+            success: function(data) {
+               if (data.liked) {
+                  likesCount.text(data.likes);
+                  likeBtn.find('i').toggleClass('fa-regular fa-heart fa-solid fa-heart');
+               } else {
+                  likesCount.text(data.likes);
+                  likeBtn.find('i').toggleClass('fa-solid fa-heart fa-regular fa-heart');
+               }
+            },
+            error: function() {
+                  alert('An error occurred while liking the event.');
+            }
+         });
+      });
+   });
+</script>
 {% endblock %}

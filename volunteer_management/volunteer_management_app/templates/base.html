@@ -25,15 +25,8 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarTogglerDemo01" style="padding-left: 64px; margin-left: 55px;">
                     <!-- Navbar brand -->
-                    {% comment %} <a class="navbar-brand mt-2 mt-lg-0" href="#">
-                        <img src="../static/images/logo.png"
-                             width="70"
-                             height="50"
-                             class="d-inline-block align-top"
-                             alt="">
-                    </a> {% endcomment %}
                     <a class="navbar-brand mt-2 mt-lg-0" href={% url 'homepage' %}>
-                        <img src="https://tuoitreiuh.vn/wp-content/uploads/2022/08/Logo-DTN-HSV-truong-trang.png"
+                        <img src="../static/images/Logo-DTN-HSV-truong-trang.png"
                              width="285"
                              height="50"
                              class="d-inline-block align-top"
@@ -75,7 +68,7 @@
                 </div>
             {% if request.user.is_anonymous %}
             <a class="text-reset" style = "padding-top: 2px;">
-                <button type="button" class="btn-signup" data-bs-toggle="modal" data-bs-target="#registerModal" href="#">Đăng ký</button>
+                <button type="button" class="btn-signup" data-bs-toggle="modal" data-bs-target="#loginModal" href="#">Đăng nhập</button>
             </a>
             {% else %}
             <span class="user-name">{{ request.user.name }}</span>
@@ -96,7 +89,7 @@
             {% endif %}
             <div style="padding-right: 20px; padding-left: 12px;">
                 <button class="toggle-button text-reset me-3" id="toggle-mode" >
-                    <img src="../static/images/moon.png"
+                    <img src="../static/images/sun.png"
                         width="25"
                         height="25"
                         alt=""
@@ -107,35 +100,28 @@
         </nav>
         <!-- Navbar -->
     </header>
-    <main>
+    <main style="padding-top: 82px;">
         {% include "base_extra\register_modal.html" %}
         {% include "base_extra\login_modal.html" %}
         {% block content %}
 
         {% endblock %}
     </main>
-    </body>
-    <footer>
-        <div class="additional-info">
-            <p class="social-media">
-                Kết nối với chúng tôi:
-                <a href="#" class="social-link"><i class="fab fa-facebook"></i></a>
-                <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
-                <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
-            </p>
+</body>
+<footer class="bg-dark text-white py-3">
+    <div class="container">
+        <div class="row">
+        <div class="col-md-6">
+            <p>&copy; 2024 Tình Nguyện IUH. Đã đăng ký bản quyền.</p>
         </div>
-        <div class="contact-info">
-            {% comment %} <p class="contact">
-                Liên hệ: 0123456789
-            </p> {% endcomment %}
-            <p class="address">
-                Địa chỉ: 12 Nguyễn Văn Bảo, Phường 4, Quận Gò Vấp, TP.Hồ Chí Minh
-            </p>
+        <div class="col-md-6 text-md-right">
+            <a href="#" class="text-white mr-3">Facebook</a>
+            <a href="#" class="text-white mr-3">Twitter</a>
+            <a href="#" class="text-white">Instagram</a>
         </div>
-        <p class="copyright">
-            Copyright ©2024 Tình Nguyện IUH. All rights reserved. Powered by Phạm Tiến Thành
-        </p>
-    </footer>
+        </div>
+    </div>
+</footer>
 </html>
 {% block script %}
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
@@ -171,6 +157,31 @@
         });
         });
     </script>
+    <script>
+        window.onload = function() {
+          $('.btn-submit-modal').on('click', function() {
+              const nameInput = document.getElementById('nameInput');
+              const ageInput = document.getElementById('ageInput');
+              const emailInput = document.getElementById('emailInput');
+              const phoneInput = document.getElementById('phoneInput');
+      
+              const modalNameInput = document.getElementById('name');
+              const modalAgeInput = document.getElementById('age');
+              const modalEmailInput = document.getElementById('email');
+              const modalPhoneInput = document.getElementById('phone');
+      
+              console.log(nameInput.value);
+              console.log(ageInput.value);
+              console.log(emailInput.value);
+              console.log(phoneInput.value);
+      
+              modalNameInput.value = nameInput.value;
+              modalAgeInput.value = ageInput.value;
+              modalEmailInput.value = emailInput.value;
+              modalPhoneInput.value = phoneInput.value;
+          });
+      };
+      </script>
 {% endblock %}
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
@@ -192,7 +203,7 @@ window.addEventListener('scroll', function() {
 });
 
 // Chuyển đổi chế độ sáng/tối
-let currentMode = 'dark-mode'; // Chế độ mặc định là tối
+let currentMode = 'light-mode'; // Chế độ mặc định là tối
 const toggleModeButton = document.getElementById('toggle-mode');
 
 toggleModeButton.addEventListener('click', function() {
@@ -225,4 +236,28 @@ dropdown.addEventListener('mouseenter', () => {
 dropdown.addEventListener('mouseleave', () => {
   userName.style.opacity = '0'; 
 })
+</script>
+<script>
+    // Hàm xử lý hiệu ứng trượt lên
+    function slideUp(entries, observer) {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const targetElement = entry.target;
+          targetElement.classList.add('slide-up');
+          observer.unobserve(targetElement);
+        }
+      });
+    }
+    
+    // Tạo đối tượng Intersection Observer
+    const observer = new IntersectionObserver(slideUp, {
+      root: null,
+      threshold: 0.1, // Phần tử sẽ được kích hoạt khi ít nhất 20% của nó xuất hiện trong khung nhìn
+    });
+    
+    // Quan sát tất cả các phần tử có lớp CSS 'observe-slide-up'
+    const elementsToObserve = document.querySelectorAll('.observe-slide-up');
+    elementsToObserve.forEach(element => {
+      observer.observe(element);
+    });
 </script>

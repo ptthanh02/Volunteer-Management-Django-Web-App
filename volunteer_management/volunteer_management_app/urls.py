@@ -12,4 +12,5 @@ urlpatterns = [
     path('dangxuat/', views.user_logout, name='user_logout'),
     path('dang-ky/', views.user_register, name='user_register'),
     path('tai_len/', views.custom_upload_function, name="custom_upload_file"),
+    path('yeu-thich-su-kien/', views.like_event, name='like_event'),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -1,251 +1,93 @@
 {% extends 'base.html' %}
-
 {% block content %}
 <link rel="stylesheet" href="../static/css/homepage.css">
-<div class="container" style="padding-top: 120px;">
-    <h1> <i class="fas fa-home"></i> Trang chủ</h1>
-    <p class="text-muted" style="font-size:1.2rem; font-weight: 500; margin-bottom: 35px;">Chào mừng bạn đến với trang chủ của cộng đồng tình nguyện viên của tình nguyện IUH</p>
+<div class="header-image-container">
+   <img src="https://homepage.momocdn.net/img/momo-upload-api-220617165559-637910817596648573.jpg" alt="Header Image" class="header-image">
+   <div class="overlay"></div>
+   <div class="header-text">
+      <h1 style="font-weight: 500 !important;">Hội Tình Nguyện IUH</h1>
+      <p>Hãy cùng chúng tôi lan tỏa tình yêu và sự thay đổi tích cực đến mọi người.</p>
+      <a class="text-reset" style = "padding-top: 2px;">
+      <button type="button" class="btn-signup" data-bs-toggle="modal" data-bs-target="#registerModal" href="#">Tìm Hiểu Thêm</button>
+      </a>
+   </div>
 </div>
-<div class="container" style="padding-top: 20px;">
-    <!-- Banners -->
-    <div class="banner-image">
-        <img src="https://tuoitreiuh.vn/wp-content/uploads/2022/06/MHX-HAIN8416-768x512.jpg" alt="Banner" class="banner-img">
-    </div>
-    <div class="card banner-post">
-        <div class="card-body">
-            <h5 class="card-title banner-title">Tuổi trẻ IUH ra quân các chương trình, chiến dịch tình nguyện hè 2022</h5>
-            <div class="banner-header">
-                <div class="avatar-container">
-                    <img src="../static/images/default_avatar.png" alt="Avatar" class="avatar-img">
-                </div>
-                <div class="banner-info">
-                    <p class="card-text banner-author">Phạm Tiến Thành</p>
-                    <p class="card-text banner-date">Ngày đăng: 20/10/2021</p>
-                </div>
+<section id="about" class="py-5">
+   <div class="container">
+      <div class="row">
+         <div class="col-md-6">
+            <h2 class="observe-slide-up" style="font-weight: 500 !important; color: #dbba57">Về Chúng Tôi</h2>
+            <p class="observe-slide-up">Tình Nguyện IUH là một tổ chức phi lợi nhuận hoạt động tại trường Đại học Công nghiệp TP.HCM (IUH). Chúng tôi tập hợp các sinh viên tình nguyện với mục đích mang lại những thay đổi tích cực cho cộng đồng và xã hội.</p>
+            <p class="observe-slide-up">Với tinh thần "Hành động vì cộng đồng," chúng tôi tổ chức các hoạt động như: hiến máu nhân đạo, bảo vệ môi trường, giúp đỡ người vô gia cư, và nhiều hoạt động khác nhằm lan tỏa tình yêu thương và lòng nhân ái.</p>
+         </div>
+         <div class="col-md-6">
+            <img src="https://cand.com.vn/Files/Image/thanhhang/2016/07/04/f240eaee-5bf3-405c-91a0-0cf1ce3aa042.jpg" alt="About Image" class="img-fluid rounded observe-slide-up" style="width: 100%; height: 100%; margin-left: 150px; border: 3px solid #dbba57;">
+         </div>
+      </div>
+   </div>
+</section>
+<section id="upcoming-events" class="py-5">
+   <div class="container">
+      <h2 style="color: #dbba57" class="text-center mb-4 observe-slide-up">Sự Kiện Sắp Tới</h2>
+      <div class="row">
+         {% for event in upcoming_events %}
+         <div class="col-md-4 mb-4 observe-slide-up">
+            <div class="card h-100 card-post">
+               <img src="{{ event.cover.url }}" class="card-img-top" alt="{{ event.name }}" style="height: 400px; weight: 400px; object-fit: cover;">
+               <div class="card-body">
+                  <h5 style="color: #dbba57; padding-bottom: 5px;" class="card-title">{{ event.name }}</h5>
+                  <hr>
+                  <p class="card-text"><i class="fa-solid fa-calendar-days"></i> Thời gian: {{ event.start_date|date:"d/m/Y" }} - {{ event.end_date|date:"d/m/Y" }}</p>
+                  <p class="card-text"><i class="fa-solid fa-location-dot"></i> Địa điểm: {{ event.location }}</p>
+                  <p class="card-text"><i class="fas fa-users"></i> {{ event.current_participants }}/{{ event.max_participants }} Người đã tham gia</p>
+               </div>
+               <div class="banner-footer" style="justify-content: center;">
+                  <button type="button" class="btn-detail-post" href="#">Xem Chi Tiết</button>
+               </div>
             </div>
-            <div class= "banner-content">
-                <p class="card-text">Tuổi trẻ IUH ra quân các chương trình, chiến dịch tình nguyện hè 2022. Đây là cơ hội để các bạn sinh viên thể hiện tinh thần tình nguyện, giúp đỡ những người có hoàn cảnh khó khăn, gặp khó khăn trong cuộc sống.</p>
+         </div>
+         {% empty %}
+         <h4 class="text-center mb-4 observe-slide-up">Hiện không có sự kiện nào sắp diễn ra. <i class="far fa-sad-tear"></i></h4>
+         {% endfor %}
+      </div>
+   </div>
+   </div>
+</section>
+<section id="join" class="py-5" style="fon-tweight: bold;">
+   <div class="container">
+      <div class="row">
+         <div class="col-md-6">
+            <img src="https://tuoitreiuh.com/wp-content/uploads/2022/06/MHX-188A2165-1024x683.jpg" alt="Join Image" class="img-fluid rounded observe-slide-up" style="width: 100%; height: 100%; border: 3px solid #dbba57;">
+         </div>
+         <div class="col-md-6">
+            <h2 class="observe-slide-up" style="color: #dbba57">Tham Gia Cùng Chúng Tôi</h2>
+            <p class="observe-slide-up">Nếu bạn là một người có lòng nhiệt huyết và muốn đóng góp cho cộng đồng, hãy đăng ký tham gia tình nguyện viên IUH ngay hôm nay.</p>
+            <div class="observe-slide-up">
+               <div class="mb-3 row">
+                  <div class="col-6" style="padding-right: 0;">
+                     <strong><label for="name">Họ tên:</label></strong>
+                     <input type="text" class="form-control" id="nameInput" name="name" placeholder="Nhập họ tên">
+                  </div>
+                  <div class="col-6">
+                     <strong><label for="age">Tuổi:</label></strong>
+                     <input type="number" class="form-control" id="ageInput" name="age" placeholder="Nhập tuổi">
+                  </div>
+               </div>
+               <div class="mb-3 row">
+                  <div class="col-6" style="padding-right: 0;">
+                     <strong><label for="email">Email:</label></strong>
+                     <input type="email" class="form-control" id="emailInput" name="email" placeholder="Nhập email">
+                  </div>
+                  <div class="col-6">
+                     <strong><label for="phone">Số điện thoại:</label></strong>
+                     <input type="text" class="form-control" id="phoneInput" name="phone" placeholder="Nhập số điện thoại">
+                  </div>
+               </div>
             </div>
-            <div class="banner-footer">
-                <div class="banner-action">
-                    <i class="fas fa-heart"></i>
-                    <span>100</span>
-                </div>
-                <div class="banner-action">
-                    <i class="fas fa-comment"></i>
-                    <span>50</span>
-                </div>
-                <div class="banner-action">
-                    <i class="fas fa-share"></i>
-                    <span>30</span>
-                </div>
-            </div>
-        </div>
-    </div>
-
-</div>
-<!-- Banners -->
-<div class="container" style="padding-top: 150px; margin-top: 90px; margin-bottom: 100px;">
-    <div class="row align-items-start">
-        <div class="col-8">
-            <h1>Bài viết mới</h1>
-            <p class="text-muted" style="font-size:1.2rem; font-weight: 500; margin-bottom: 35px;">Cập nhật những bài viết mới nhất từ cộng đồng tình nguyện viên</p>
-
-            <!-- Bài viết mới -->
-            <div class="card post">
-                <div class="card-body" style="padding: 8px;">
-                    <div class="container">
-                        <div class="row align-items-start"> 
-                            <div class="col-8">
-                                <h5 class="card-title post-title">Tuổi trẻ IUH ra quân các chương trình, chiến dịch tình nguyện hè 2022</h5>
-                                <div class="post-header">
-                                    <div class="avatar-container">
-                                        <img src="../static/images/default_avatar.png" alt="Avatar" class="avatar-img">
-                                    </div>
-                                    <div class="post-info">
-                                        <p class="card-text post-author">Phạm Tiến Thành</p>
-                                        <p class="card-text post-date">Ngày đăng: 20/10/2021</p>
-                                    </div>
-                                </div>
-                                <div class= "post-content">
-                                    <p class="card-text">Tuổi trẻ IUH ra quân các chương trình, chiến dịch tình nguyện hè 2022. Đây là cơ hội để các bạn sinh viên thể hiện tinh thần tình nguyện, giúp đỡ những người có hoàn cảnh khó khăn, gặp khó khăn trong cuộc sống.</p>
-                                </div>
-                            </div>
-                            <div class="col-4">
-                                <div class="post-image">
-                                    <img src="https://tuoitreiuh.vn/wp-content/uploads/2022/06/MHX-HAIN8416-768x512.jpg" alt="Image" class="post-img">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="post-footer">
-                        <div class="post-action">
-                            <i class="fas fa-heart"></i>
-                            <span>100</span>
-                        </div>
-                        <div class="post-action">
-                            <i class="fas fa-comment"></i>
-                            <span>50</span>
-                        </div>
-                        <div class="post-action">
-                            <i class="fas fa-share"></i>
-                            <span>30</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Bài viết mới -->
-
-            <!-- Bài viết mới -->
-            <div class="card post">
-                <div class="card-body" style="padding: 8px;">
-                    <div class="container">
-                        <div class="row align-items-start"> 
-                            <div class="col-8">
-                                <h5 class="card-title post-title">Tuổi trẻ IUH ra quân các chương trình, chiến dịch tình nguyện hè 2022</h5>
-                                <div class="post-header">
-                                    <div class="avatar-container">
-                                        <img src="../static/images/default_avatar.png" alt="Avatar" class="avatar-img">
-                                    </div>
-                                    <div class="post-info">
-                                        <p class="card-text post-author">Phạm Tiến Thành</p>
-                                        <p class="card-text post-date">Ngày đăng: 20/10/2021</p>
-                                    </div>
-                                </div>
-                                <div class= "post-content">
-                                    <p class="card-text">Tuổi trẻ IUH ra quân các chương trình, chiến dịch tình nguyện hè 2022. Đây là cơ hội để các bạn sinh viên thể hiện tinh thần tình nguyện, giúp đỡ những người có hoàn cảnh khó khăn, gặp khó khăn trong cuộc sống.</p>
-                                </div>
-                            </div>
-                            <div class="col-4">
-                                <div class="post-image">
-                                    <img src="https://tuoitreiuh.vn/wp-content/uploads/2022/06/MHX-HAIN8416-768x512.jpg" alt="Image" class="post-img">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="post-footer">
-                        <div class="post-action">
-                            <i class="fas fa-heart"></i>
-                            <span>100</span>
-                        </div>
-                        <div class="post-action">
-                            <i class="fas fa-comment"></i>
-                            <span>50</span>
-                        </div>
-                        <div class="post-action">
-                            <i class="fas fa-share"></i>
-                            <span>30</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Bài viết mới -->
-
-            <!-- Bài viết mới -->
-            <div class="card post">
-                <div class="card-body" style="padding: 8px;">
-                    <div class="container">
-                        <div class="row align-items-start"> 
-                            <div class="col-8">
-                                <h5 class="card-title post-title">Tuổi trẻ IUH ra quân các chương trình, chiến dịch tình nguyện hè 2022</h5>
-                                <div class="post-header">
-                                    <div class="avatar-container">
-                                        <img src="../static/images/default_avatar.png" alt="Avatar" class="avatar-img">
-                                    </div>
-                                    <div class="post-info">
-                                        <p class="card-text post-author">Phạm Tiến Thành</p>
-                                        <p class="card-text post-date">Ngày đăng: 20/10/2021</p>
-                                    </div>
-                                </div>
-                                <div class= "post-content">
-                                    <p class="card-text">Tuổi trẻ IUH ra quân các chương trình, chiến dịch tình nguyện hè 2022. Đây là cơ hội để các bạn sinh viên thể hiện tinh thần tình nguyện, giúp đỡ những người có hoàn cảnh khó khăn, gặp khó khăn trong cuộc sống.</p>
-                                </div>
-                            </div>
-                            <div class="col-4">
-                                <div class="post-image">
-                                    <img src="https://tuoitreiuh.vn/wp-content/uploads/2022/06/MHX-HAIN8416-768x512.jpg" alt="Image" class="post-img">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="post-footer">
-                        <div class="post-action">
-                            <i class="fas fa-heart"></i>
-                            <span>100</span>
-                        </div>
-                        <div class="post-action">
-                            <i class="fas fa-comment"></i>
-                            <span>50</span>
-                        </div>
-                        <div class="post-action">
-                            <i class="fas fa-share"></i>
-                            <span>30</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Bài viết mới -->
-            <button type="button" class="btn btn-primary see-more-btn">Xem thêm</button>
-        </div>
-        <div class="col-4">
-            <!-- Chuyên mục -->
-            <div class="card category">
-                <div class="card-body">
-                    <h5 class="card-title">Chuyên mục nổi bậc</h5>
-                </div>
-                <div class"category-list">
-                    <hr class="category-divider">
-                    <div class="category-content">
-                        <div class="category-item">Tình nguyện</div>
-                        <p class="text-muted mute-category-item">5 bài báo</p>
-                    </div>
-                    <hr class="category-divider">
-                    <div class="category-content">
-                        <div class="category-item">Quyên góp</div>
-                        <p class="text-muted mute-category-item">5 bài báo</p>
-                    </div>
-                    <hr class="category-divider">
-                    <div class="category-content">
-                        <div class="category-item">Giúp đỡ</div>
-                        <p class="text-muted mute-category-item">5 bài báo</p>
-                    </div>
-                    <hr class="category-divider">
-                    <div class="category-content">
-                        <div class="category-item">Việc làm</div>
-                        <p class="text-muted mute-category-item">5 bài báo</p>
-                    </div>
-                </div>
-            </div>
-            <!-- Chuyên mục -->
-            <div class="card category" style="margin-top: 45px;">
-                <div class="card-body">
-                    <h5 class="card-title">Tác giả nổi bậc</h5>
-                </div>
-                <div class"category-list">
-                    <hr class="category-divider">
-                    <div class="author-content">
-                        <div class="pop-avatar-container">
-                            <img src="../static/images/default_avatar.png" alt="Avatar" class="avatar-img">
-                        </div> 
-                        <div class="pop-author-info">
-                            <p class="pop-author">Phạm Tiến Thành</p>
-                            <p class="text-muted" style="margin : 0;">5 bài viết, 1K lượt xem</p>
-                        </div>
-                    </div>
-                    <hr class="category-divider">
-                    <div class="author-content">
-                        <div class="pop-avatar-container">
-                            <img src="../static/images/default_avatar.png" alt="Avatar" class="avatar-img">
-                        </div> 
-                        <div class="pop-author-info">
-                            <p class="pop-author">Phạm Tiến Thành</p>
-                            <p class="text-muted" style="margin : 0;">5 bài viết, 1K lượt xem</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-    </div>
-</div>
+            <a href="#" style="color: #dbba57;">Điều khoản và Điều kiện</a>
+            <button type="button" class="btn-detail-post" data-bs-toggle="modal" data-bs-target="#registerModal">Đăng ký</button>
+         </div>
+      </div>
+   </div>
+</section>
 {% endblock %}

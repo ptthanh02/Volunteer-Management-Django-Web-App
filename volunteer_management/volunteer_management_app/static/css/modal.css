@@ -1,6 +1,7 @@
 .modal-header{
-    background: linear-gradient(to right, rgba(106, 17, 203, 0.9), rgba(37, 117, 252, 0.9));
-    color: white;
+    /* background: linear-gradient(to right, rgba(106, 17, 203, 0.9), rgba(37, 117, 252, 0.9)); */
+    background : #2c2c3c;
+    color: #dbba57;
     padding: 10px 20px; 
     display: flex;
     justify-content: space-between;
@@ -14,8 +15,9 @@
 }
 
 .btn-submit-modal{
-    background-color: rgba(54, 114, 218, 0.9);
-    color: #e5e7eb;
+    /* background-color: rgba(54, 114, 218, 0.9); */
+    background-color: #2c2c3c;
+    color: #ffffff;
     border: none;
     padding: 10px 20px;
     border-radius: 5px;
@@ -25,8 +27,9 @@
 }
 
 .btn-submit-modal:hover {
-    background-color: #4338ca;
-    color: #e5e7eb;;
+    /* background-color: #4338ca; */
+    background-color: #d4a03b;
+    color: #ffffff;;
   }
   
 .btn-submit-modal:focus {
