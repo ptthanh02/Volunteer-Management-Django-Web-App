@@ -1,0 +1,40 @@
+<!-- Modal thông báo trước khi tham gia -->
+<div class="modal fade" id="confirmJoinModal" tabindex="-1" role="dialog" aria-labelledby="confirmJoinModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="confirmJoinModalLabel">Xác nhận tham gia</h5>
+          <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          Bạn có chắc chắn muốn tham gia sự kiện này? Sau khi tham gia, bạn sẽ không thể hủy.
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Hủy</button>
+          <button type="button" class="btn btn-primary" id="confirmJoinBtn" style="background-color: #dbba57; border-color: #dbba57;">Tham gia</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Modal thông báo sau khi tham gia -->
+  <div class="modal fade" id="joinResultModal" tabindex="-1" role="dialog" aria-labelledby="joinResultModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="joinResultModalLabel">Kết quả</h5>
+          <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class = "text-center">
+            <i class="fa-solid fa-check-circle" style="color: #28a745; font-size: 2rem; margin-bottom: 10px; display: block; text-align: center;"></i>
+            <p id="joinResultMessage"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

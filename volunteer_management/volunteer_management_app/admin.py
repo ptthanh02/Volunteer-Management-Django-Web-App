@@ -36,17 +36,17 @@ class VolunteerEventPostAdmin(admin.ModelAdmin):
         return form
     
     fieldsets = (
-        ('Thông tin cơ bản', {'fields': ('name','organizer', 'category', 'status')}),
+        ('Thông tin cơ bản', {'fields': ('name','organizer', 'category', 'status', 'current_participants', 'max_participants')}),
         ('Thời gian và địa điểm', {'fields': ('start_date', 'end_date', 'location')}),
         ('Chi tiết sự kiện', {'fields': ('cover', 'description', 'hours')}),
+        ('Khác', {'fields': ('likes', 'shares', 'views')}),
     )
     
 class UserEventRelationInline(admin.TabularInline):
     model = UserEventRelation
     extra = 0
-    can_delete = False
-    fields = ('event', 'event_report','relation_type', 'updated_at')
-    readonly_fields = ('event', 'event_report', 'relation_type', 'updated_at')
+    fields = ('event', 'event_report','relation_type', 'updated_at',)
+    readonly_fields = ('updated_at',)
     
     def has_add_permission(self, request, obj=None):
         return False

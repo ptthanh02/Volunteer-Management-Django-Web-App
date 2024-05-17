@@ -1,0 +1,89 @@
+.event-detail {
+background-color: #fff;
+padding: 30px;
+border-radius: 5px;
+box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.event-title {
+font-size: 2.5rem;
+font-weight: bold;
+margin-bottom: 20px;
+}
+.event-cover {
+margin-bottom: 20px;
+}
+.event-info {
+margin-bottom: 20px;
+}
+.event-description {
+margin-bottom: 30px;
+}
+.event-actions {
+margin-bottom: 20px;
+display: flex;
+justify-content: center;
+}
+.event-sidebar .card {
+border: none;
+box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.event-sidebar .card-title {
+font-size: 1.2rem;
+font-weight: bold;
+margin-bottom: 15px;
+}
+.event-sidebar .btn {
+margin-right: 10px;
+margin-bottom: 10px;
+}
+.event-sidebar .btn i {
+margin-right: 5px;
+}
+.event-sidebar .btn-light {
+color: #333;
+background-color: #f8f9fa;
+border-color: #f8f9fa;
+}
+.event-sidebar .btn-light:hover {
+color: #333;
+background-color: #e9ecef;
+border-color: #e9ecef;
+}
+.event-sidebar .text-danger {
+color: #dc3545 !important;
+}
+.event-sidebar .text-success {
+color: #28a745 !important;
+}
+.event-sidebar .text-primary {
+color: #007bff !important;
+}
+
+.event-description img {
+  max-width: 100%;
+  height: auto;
+}
+
+.btn-detail-post{
+    background-color: #dbba57;
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 25px;
+    transition: background-color 0.3s ease;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+  
+  .btn-detail-post:hover {
+    background-color: #d4a03b;
+    color: #ffffff;
+  }
+  
+  .btn-detail-post:focus {
+    box-shadow: none;
+  }
+  
+  .btn-detail-post:active {
+    transform: scale(0.98); 
+  }

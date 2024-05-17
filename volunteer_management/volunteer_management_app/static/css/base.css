@@ -53,6 +53,20 @@ body {
   background-color: #ffffff;
 }
 
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+.content {
+  flex: 1 0 auto;
+}
+
 @import url('https://fonts.googleapis.com/css2?family=Muli:wght@400;700&display=swap');
 
 main {
@@ -62,10 +76,7 @@ main {
 
 /*----------------- footer -----------------*/
 footer {
-  position: bottom;
-  bottom: 0;
-  left: 0;
-  width: 100%;
+  flex-shrink: 0;
   background-color: #1f2024;
   color: #e5e7eb;
   padding: 10px 0;
@@ -83,7 +94,7 @@ footer {
 }
 
 .dark-mode {
-  background-color: #111827; /* Màu nền tối */
+  background-color: #111827; /* Màu nền tối #2c2c3c*/
   color: #e5e7eb; /* Màu chữ sáng */
 }
 

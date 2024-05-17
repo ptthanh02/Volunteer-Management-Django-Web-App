@@ -6,24 +6,3 @@ django-filter==24.1
 django-ckeditor-5==0.2.13
 django-jazzmin==3.0.0
 
-    <footer>
-        <div class="additional-info">
-            <p class="social-media">
-                Kết nối với chúng tôi:
-                <a href="#" class="social-link"><i class="fab fa-facebook"></i></a>
-                <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
-                <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
-            </p>
-        </div>
-        <div class="contact-info">
-            {% comment %} <p class="contact">
-                Liên hệ: 0123456789
-            </p> {% endcomment %}
-            <p class="address">
-                Địa chỉ: 12 Nguyễn Văn Bảo, Phường 4, Quận Gò Vấp, TP.Hồ Chí Minh
-            </p>
-        </div>
-        <p class="copyright">
-            Copyright ©2024 Tình Nguyện IUH. All rights reserved. Powered by Phạm Tiến Thành
-        </p>
-    </footer>

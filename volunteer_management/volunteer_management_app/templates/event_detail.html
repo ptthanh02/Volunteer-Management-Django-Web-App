@@ -1,0 +1,189 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<link rel="stylesheet" href="{% static '/css/event_detail.css' %}">
+<div class="container" style="padding-top: 80px; padding-bottom: 50px">
+  <div class="row">
+    <div class="col-md-8">
+      <div class="event-detail">
+        <h1 class="event-title">{{ event.name }}</h1>
+        <div class="event-cover">
+          <img src="{{ event.cover.url }}" alt="{{ event.name }}" class="img-fluid">
+        </div>
+        <div class="event-info row">
+          <div class="col-md-6">
+            <p><i class="fas fa-calendar-alt"></i> <strong>Ngày tổ chức:</strong> {{ event.start_date|date:"d/m/Y" }}</p>
+            <p><i class="fas fa-calendar-times"></i> <strong>Ngày kết thúc:</strong> {{ event.end_date|date:"d/m/Y" }}</p>
+            <p><i class="fas fa-clock"></i> <strong>Số giờ tình nguyện:</strong> {{ event.hours }} giờ</p>
+            <p><i class="fas fa-map-marker-alt"></i> <strong>Địa điểm:</strong> {{ event.location }}</p>
+          </div> 
+          <div class="col-md-6">
+            <p><i class="fas fa-clipboard-list"></i> <strong>Trạng thái:</strong> {{ event.get_status_display }}</p>
+            <p><i class="fas fa-tag"></i> <strong>Loại sự kiện:</strong> {{ event.get_category_display }}</p>
+            <p><i class="fas fa-users"></i> <strong>Số người tham gia:</strong> {{ event.current_participants }} / {{ event.max_participants }}</p>
+            <p><i class="fa-solid fa-phone"></i> <strong>Thắc mắc liên hệ:</strong> {{ event.organizer.phone }} ({{ event.organizer.name }})</p>
+          </div>
+        </div>
+        <div class="event-description">
+          <h2>Mô tả sự kiện</h2>
+          {{ event.description|safe }}
+        </div>
+        <div class="event-actions">
+          {% if request.user.is_authenticated %}
+            {% if event.is_user_attended %}
+              <button class="btn-detail-post" style="background-color: #28a745; color: #fff;" disabled>Đã tham gia</button>
+              {% else %}
+                <button class="btn-detail-post join-btn" data-event-id="{{ event.id }}">Tham gia</button>
+              {% endif %}
+          {% else %}
+            <a href="{% url 'login' %}" class="btn-detail-post">Đăng nhập để tham gia</a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="event-sidebar">
+        <div class="card mb-4">
+          <div class="card-body">
+            <h5 class="card-title">Thao tác</h5>
+            <a href="{% url 'activities' %}" class="btn btn-light">
+              <i class="fa-solid fa-arrow-left text-primary"></i> Trở về
+            </a>
+            {% if event.liked %}
+            <button class="btn btn-light likeBtn" data-event-id="{{ event.id }}">
+              <i class="fa-solid fa-heart text-danger"></i> Yêu thích
+            </button>
+            {% else %}
+            <button class="btn btn-light likeBtn" data-event-id="{{ event.id }}">
+              <i class="fa-regular fa-heart text-danger"></i> Yêu thích
+            </button>
+            {% endif %}
+            <button class="btn btn-light shareBtn" data-bs-toggle="modal" data-bs-target="#shareModal{{ event.id }}">
+              <i class="fa-solid fa-share-nodes text-success"></i> Chia sẻ
+            </button> 
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Thống kê</h5>
+            <p><i class="fa-regular fa-heart text-danger"></i> Lượt yêu thích: <span class="like-count">{{ event.likes }}</span></p>
+            <p><i class="fa-solid fa-share-nodes text-success"></i> Lượt chia sẻ: <span class="share-count">{{ event.shares }}</span></p>
+            <p><i class="fa-solid fa-eye text-primary"></i> Lượt xem: {{ event.views }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% include "activities_includes\share_modal.html" %}
+{% include "event_detail_includes\event_detail_modal.html" %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  $(document).ready(function() {
+    var likesCount = $('.like-count');
+      $('.likeBtn').click(function() {
+          var eventId = $(this).data('event-id');
+          var csrfToken = "{{ csrf_token }}";
+
+          $.ajax({
+              url: "{% url 'like_event_detail' %}",
+              type: "POST",
+              data: {
+                  'event_id': eventId,
+                  'csrfmiddlewaretoken': csrfToken
+              },
+              success: function(response) {
+                  if (response.success) {
+                      if (response.liked) {
+                          $('.likeBtn i').removeClass('fa-regular').addClass('fa-solid');
+                          likesCount.text(response.likes);
+                      } else {
+                          $('.likeBtn i').removeClass('fa-solid').addClass('fa-regular');
+                          likesCount.text(response.likes);
+                      }
+                  } else {
+                      alert(response.error);
+                  }
+              },
+              error: function(xhr, errmsg, err) {
+                  console.log(xhr.status + ": " + xhr.responseText);
+              }
+          });
+      });
+      var shareCount = $('.share-count');
+      $('.btn-share-platform').click(function() {
+        var eventId = $(this).data('event-id');
+        var sharePlatform = $(this).data('share-platform');
+
+        $.ajax({
+          url: '{% url 'share_event' %}',
+          type: 'POST',
+          data: {
+            'event_id': eventId,
+            'share_platform': sharePlatform,
+            'csrfmiddlewaretoken': '{{ csrf_token }}'
+          },
+          success: function(data) {
+            if (data.error) {
+              alert(data.error);
+            } else {
+              var shareUrl;
+              switch (sharePlatform) {
+                case 'facebook':
+                  shareUrl = 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(data.share_url);
+                  break;
+                case 'instagram':
+                  shareUrl = 'https://www.instagram.com/sharer.php?u=' + encodeURIComponent(data.share_url);
+                  break;
+                case 'twitter':
+                  shareUrl = 'https://twitter.com/intent/post?url=' + encodeURIComponent(data.share_url);
+                  break;
+                case 'email':
+                  shareUrl = 'mailto:?body=' + encodeURIComponent(data.share_url);
+                  break;
+                default:
+                  shareUrl = '';
+              }
+              window.open(shareUrl);
+              // $('#shareModal' + eventId).modal('hide');
+              shareCount.text(data.shares);
+            }
+          },
+          error: function() {
+            alert('An error occurred while sharing the event.');
+          }
+        });
+      });
+    $('.join-btn').click(function() {
+        $('#confirmJoinModal').modal('show');
+    });
+    
+    $('#confirmJoinBtn').click(function() {
+        var eventId = $('.join-btn').data('event-id');
+        var csrfToken = "{{ csrf_token }}";
+        $.ajax({
+            url: "{% url 'join_event' %}",
+            type: "POST",
+            data: {
+                'event_id': eventId,
+                'csrfmiddlewaretoken': csrfToken
+            },
+            success: function(response) {
+                $('#confirmJoinModal').modal('hide');
+                if (response.success) {
+                    $('#joinResultMessage').text(response.message);
+                    $('#joinResultModal').modal('show');
+                    $('.join-btn').text('Đã tham gia').css('background-color', '#28a745').css('color', '#fff').prop('disabled', true);
+                } else {
+                    $('#joinResultMessage').text(response.error);
+                    $('#joinResultModal').modal('show');
+                }
+            },
+            error: function(xhr, errmsg, err) {
+                console.log(xhr.status + ": " + xhr.responseText);
+            }
+        });
+    });
+  });
+</script>
+{% endblock %}

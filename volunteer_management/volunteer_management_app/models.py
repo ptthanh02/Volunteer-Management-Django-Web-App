@@ -22,10 +22,11 @@ class VolunteerEventPost(models.Model):
     description = CKEditor5Field(_('Mô tả sự kiện'), null=False, blank=False, config_name='extends', help_text=_('Mô tả chi tiết về sự kiện, đây cũng sẽ là nội dụng  cho bài viết về sự kiện tình nguyện này.'))
     hours = models.IntegerField(_('Số giờ tình nguyện'), null=False, blank=False, default=1, help_text=_('Số giờ tối thiểu mà người tham gia cần tình nguyện.'))
     cover = models.ImageField(_('Ảnh bìa sự kiện'), upload_to='event_covers/', null=True, blank=True, default='event_covers/default_cover.png')
-    likes = models.IntegerField(_('Lượt yêu thích'), default=0, editable=False)
-    shares = models.IntegerField(_('Lượt chia sẻ'), default=0, editable=False)
-    max_participants = models.IntegerField(_('Số người tham gia tối đa'), default=10)
-    current_participants = models.IntegerField(_('Số người tham gia hiện tại'), default=0, editable=False)
+    likes = models.IntegerField(_('Lượt yêu thích'), default=0)
+    shares = models.IntegerField(_('Lượt chia sẻ'), default=0)
+    views = models.IntegerField(_('Lượt xem'), default=0)
+    max_participants = models.IntegerField(_('Số người tham gia tối đa'), default=50)
+    current_participants = models.IntegerField(_('Số người tham gia hiện tại'), default=0)
     organizer = models.ForeignKey('CustomUser', on_delete=models.CASCADE, related_name='events_organized', verbose_name=_('Người tổ chức'), help_text=_('Chỉ người dùng quản trị mới có thể tổ chức sự kiện.'), null=False, blank=False)
     STATUS_CHOICES = [
         ('planned', _('Đang lên kế hoạch')),
@@ -144,7 +145,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     events_attended = models.ManyToManyField(VolunteerEventPost, through='UserEventRelation', related_name='attendees', blank=True, verbose_name=_('Sự kiện đã tham gia'))
     viewed_reports = models.ManyToManyField('EventReport', through='UserEventRelation', related_name='viewed_users', blank=True, verbose_name=_('Báo cáo sự kiện đã xem'))
 
-    REQUIRED_FIELDS = ['name']
+    REQUIRED_FIELDS = ['name', 'phone']
     
     @property
     def viewed_events(self):

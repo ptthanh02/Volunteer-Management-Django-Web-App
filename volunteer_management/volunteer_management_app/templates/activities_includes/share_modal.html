@@ -1,0 +1,28 @@
+<div class="modal fade" id="shareModal{{ event.id }}" tabindex="-1" aria-labelledby="shareModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="shareModalLabel">Chia sẻ sự kiện này</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="share-buttons">
+                    <button class="btn btn-share-platform" data-event-id="{{ event.id }}" data-share-platform="facebook">
+                        <img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" alt="Facebook" style = "width: 20px; height: 20px; margin-bottom: 5px;"/> Facebook 
+                    </button>
+                    <button class="btn btn-share-platform" data-event-id="{{ event.id }}" data-share-platform="instagram">
+                        <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png " alt="Instagram" style = "width: 20px; height: 20px; margin-bottom: 5px;"/> Instagram
+                    </button>
+                    <button class="btn btn-share-platform" data-event-id="{{ event.id }}" data-share-platform="twitter">
+                        <img src="https://cdn-icons-png.flaticon.com/512/5968/5968830.png" alt="Twitter" style = "width: 20px; height: 20px; margin-bottom: 5px;"/> Twitter
+                    </button>
+                    <button class="btn btn-share-platform" data-event-id="{{ event.id }}" data-share-platform="email">
+                        <img src="https://cdn-icons-png.flaticon.com/512/732/732200.png" alt="Email" style = "width: 20px; height: 20px; margin-bottom: 5px;"/> Email
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

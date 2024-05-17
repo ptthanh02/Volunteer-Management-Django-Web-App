@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'crispy_bootstrap5',
     'django.contrib.humanize',
     'django_ckeditor_5',
+    'django_filters',
 ]
 
 # Crispy forms configuration
@@ -171,8 +172,7 @@ JAZZMIN_SETTINGS = {
 
     # Liên kết menu trên cùng
     "topmenu_links": [
-        {"name": "Trang quản trị", "url": "admin:index", "permissions": ["volunteer_management_app.view_customuser"]},
-        {"name": "Trang chủ Website", "url": "/", "new_window": True},
+        {"name": "Trang chủ", "url": "/", "new_window": True},
     ],
 
     # Liên kết menu người dùng

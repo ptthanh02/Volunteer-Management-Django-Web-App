@@ -1,117 +1,206 @@
 {% extends 'base.html' %}
 {% block content %}
+{% load crispy_forms_tags %}
 <link rel="stylesheet" href="../static/css/activities.css" />
-<div class="container" style="padding-top: 90px; padding-bottom: 50px">
+<div class="container" style="padding-top: 80px; padding-bottom: 50px">
    <h2 style="color: #dbba57" class="text-center mb-4 observe-slide-up">
       Hoạt Động Tình Nguyện Của Bạn
    </h2>
-   <div class="input-group mb-4">
-      <input
-         type="text"
-         class="form-control"
-         placeholder="Tìm kiếm sự kiện"
-         id="searchInput"
-         />
-      <div class="input-group-append">
-         <button class="btn btn-primary" type="button" id="searchButton">
-         Tìm kiếm
-         </button>
+   <div class="text-reset observe-slide-up" style="text-decoration: none;">
+    <div class="search-and-filter">
+      <form method="get" class="filter-row">
+        <div class="form-elements">
+          {{ filter.form|crispy }}
+          <button type="submit" class="btn-detail-post" style="margin-top: 24px;">Lọc</button>
+          <button id="reset-filters" type="button" class="btn-detail-post" style="margin-top: 24px;"><i class="fas fa-redo"></i></button>
+        </div>
+      </form>
+      <div class="search-box-c">
+        <input type="search" id="searchInput" class="search-txt-c" placeholder="Tìm kiếm sự kiện, địa điểm, thông tin..." appearance="none">
+        <a class="search-btn-c" id="searchButton">
+          <i class="fa-solid fa-magnifying-glass"></i>
+        </a>
       </div>
-   </div>
-   <nav style="padding-top: 30px; padding-bottom: 50px">
+    </div>
+  </div>
+   <nav style="padding-top: 30px; padding-bottom: 50px" class="observe-slide-up">
       <ul class="nav custom-nav">
          <li class="nav-item custom-nav-item">
-            <a href="#" class="nav-link custom-nav-link">Chưa Tham Gia (78)</a>
+            <a href="#" class="nav-link custom-nav-link active" data-filter="all">Tất Cả ({{ event_posts.count }})</a>
          </li>
          <li class="nav-item custom-nav-item">
-            <a href="#" class="nav-link custom-nav-link">Đã Tham Gia (16)</a>
+            <a href="#" class="nav-link custom-nav-link" data-filter="not-joined">Chưa Tham Gia ({{ not_joined_events.count }})</a>
          </li>
          <li class="nav-item custom-nav-item">
-            <a href="#" class="nav-link custom-nav-link">Đã Yêu Thích (34)</a>
+            <a href="#" class="nav-link custom-nav-link" data-filter="joined">Đã Tham Gia ({{ joined_events.count }})</a>
+         </li>
+         <li class="nav-item custom-nav-item">
+            <a href="#" class="nav-link custom-nav-link" data-filter="liked">Đã Yêu Thích ({{ liked_events.count }})</a>
          </li>
       </ul>
    </nav>
-   <div class="row">
-      {% for event in event_posts %}
-      <div class="col col-md-4 mb-4">
-         <div class="card">
-            <img src="{{ event.cover.url }}" alt="{{ event.name }}" style="object-fit: cover;">
-            <div class="card-content">
-               <div class="row">
-                  <h5 class="card-title">{{ event.name }}</h5>
-                  <div class="col-5">
-                     <p><i class="fa-solid fa-calendar-days"></i> {{ event.start_date|date:"d/m/Y" }}</p>
-                     <hr>
-                     <i class="fas fa-users"></i> {{ event.current_participants }}/{{ event.max_participants }}</p>
-                     <hr>
-                     <p><i class="fa-solid fa-location-dot"></i> {{ event.location }}</p>
-                  </div>
-                  <div class="col-1" style="padding: 0; width: 12px;">
-                     <div class="vl"></div>
-                  </div>
-                  <div class="col-6" style="padding-left: 0;"> 
-                     <div class="short-description">
-                        <p>
-                           {{ event.description|striptags|truncatewords:100 }}
-                        </p>
-                     </div>
-                  </div>
-                  <div class="banner-footer" style="padding-top: 10px;">
-                     <button type="button" class="btn-detail-post" href="#">Xem Chi Tiết</button>
-                     <button type="button" class="btn-detail-post shareBtn" id="shareBtn"style="margin-right: 88px; margin-left: 3px;">
-                        {{ event.shares }}
-                        <i class="fa-solid fa-share-nodes"></i>
-                     </button>
-                     <button type="button" class="btn-detail-post likeBtn" id="likeBtn" data-event-id="{{ event.id }}">
-                        <span class="likes-count">{{ event.likes }}</span>
-                        {% if event.liked %}
-                        <i class="fa-solid fa-heart"></i>
-                        {% else %}
-                        <i class="fa-regular fa-heart"></i>
-                        {% endif %}
-                     </button>
-                  </div>
-               </div>
-            </div>
-        </div>
-      </div>
-      
-         {% empty %}
-         <h4 class="text-center mb-4 observe-slide-up">Hiện không có sự kiện nào sắp diễn ra. <i class="far fa-sad-tear"></i></h4>
-         {% endfor %}
-      </div>
-
+  <div class="row" id="event-list">
+    {% for event in filter.qs %}
+    <div class="col col-md-4 mb-4">
+    </div>
+    {% empty %}
+    <h4 class="text-center mb-4 observe-slide-up">Không tìm thấy sự kiện nào. <i class="far fa-sad-tear"></i></h4>
+    {% endfor %}
+ </div>
 </div>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
    $(document).ready(function() {
-      $('.likeBtn').click(function() {
-         var eventId = $(this).data('event-id');
-         var likeBtn = $(this);
-         var likesCount = likeBtn.find('.likes-count');
-         var heartIcon = likeBtn.find('.fa-heart');
-         console.log(eventId);
-         $.ajax({
-            url: '{% url 'like_event' %}',
-            type: 'POST',
-            data: {
+      // Chức năng load event list
+      loadEventList('all');
+    
+      $('.custom-nav-link').click(function(e) {
+        e.preventDefault();
+        var filter = $(this).data('filter');
+        loadEventList(filter);
+        $('.custom-nav-link').removeClass('active');
+        $(this).addClass('active');
+      });
+    
+      function loadEventList(filter) {
+        var filterData = $('form').serialize();
+        filterData += '&filter=' + filter;
+        $.ajax({
+          url: '{% url 'load_events' %}',
+          data: filterData,
+          success: function(data) {
+            $('#event-list').html(data.html);
+            
+            // Chức năng like event
+            $('.likeBtn').click(function() {
+              var eventId = $(this).data('event-id');
+              var likeBtn = $(this);
+              var likesCount = likeBtn.find('.likes-count');
+    
+              $.ajax({
+                url: '{% url 'like_event' %}',
+                type: 'POST',
+                data: {
                   'event_id': eventId,
                   'csrfmiddlewaretoken': '{{ csrf_token }}'
-            },
+                },
+                success: function(data) {
+                  if (data.liked) {
+                    likesCount.text(data.likes);
+                    likeBtn.find('img').attr('src', 'https://cdn-icons-png.flaticon.com/512/14533/14533613.png');
+                  } else {
+                    likesCount.text(data.likes);
+                    likeBtn.find('img').attr('src', 'https://cdn-icons-png.flaticon.com/512/2832/2832478.png');
+                  }
+                },
+                error: function() {
+                  alert('An error occurred while liking the event.');
+                }
+              });
+            });
+
+            // Chức năng reset filter
+            var resetButton = document.getElementById('reset-filters');
+
+            resetButton.addEventListener('click', function() {
+                // Xóa giá trị của các trường lọc
+                var filterFields = document.querySelectorAll('.form-elements select, .form-elements input[type="text"]');
+                filterFields.forEach(function(field) {
+                    field.value = '';
+                });
+
+                // Gửi yêu cầu AJAX để reset bộ lọc
+                $.ajax({
+                    url: '{% url 'reset_events_filter' %}',
+                    success: function(data) {
+                        $('#event-list').html(data);
+                    },
+                    error: function() {
+                        alert('An error occurred while resetting the filter.');
+                    }
+                });
+            });
+            var shareCount = $('.share-count');
+            // Chức năng share event
+            $('.btn-share-platform').click(function() {
+              var eventId = $(this).data('event-id');
+              var sharePlatform = $(this).data('share-platform');
+    
+              $.ajax({
+                url: '{% url 'share_event' %}',
+                type: 'POST',
+                data: {
+                  'event_id': eventId,
+                  'share_platform': sharePlatform,
+                  'csrfmiddlewaretoken': '{{ csrf_token }}'
+                },
+                success: function(data) {
+                  if (data.error) {
+                    alert(data.error);
+                  } else {
+                    var shareUrl;
+                    switch (sharePlatform) {
+                      case 'facebook':
+                        shareUrl = 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(data.share_url);
+                        break;
+                      case 'instagram':
+                        shareUrl = 'https://www.instagram.com/sharer.php?u=' + encodeURIComponent(data.share_url);
+                        break;
+                      case 'twitter':
+                        shareUrl = 'https://twitter.com/intent/post?url=' + encodeURIComponent(data.share_url);
+                        break;
+                      case 'email':
+                        shareUrl = 'mailto:?body=' + encodeURIComponent(data.share_url);
+                        break;
+                      default:
+                        shareUrl = '';
+                    }
+                    window.open(shareUrl);
+                    // $('#shareModal' + eventId).modal('hide');
+                    shareCount.text(data.shares);
+                  }
+                },
+                error: function() {
+                  alert('An error occurred while sharing the event.');
+                }
+              });
+            });
+          }
+        });
+      }
+    
+      // Chức năng search event
+      var isLoading = false;
+      var searchTimeout = null;
+    
+      $('#searchInput').on('input', function() {
+        var searchQuery = $(this).val().trim().toLowerCase();
+        clearTimeout(searchTimeout);
+    
+        searchTimeout = setTimeout(function() {
+          filterEventPosts(searchQuery);
+        }, 300);
+      });
+    
+      function filterEventPosts(searchQuery) {
+        if (!isLoading) {
+          isLoading = true;
+          $('#event-list').html('<div class="text-center"><i class="fas fa-spinner fa-spin"></i> Đang tải...</div>');
+    
+          $.ajax({
+            url: '{% url 'filter_events' %}',
+            data: { 'search_query': searchQuery },
             success: function(data) {
-               if (data.liked) {
-                  likesCount.text(data.likes);
-                  likeBtn.find('i').toggleClass('fa-regular fa-heart fa-solid fa-heart');
-               } else {
-                  likesCount.text(data.likes);
-                  likeBtn.find('i').toggleClass('fa-solid fa-heart fa-regular fa-heart');
-               }
+              $('#event-list').html(data.html);
+              isLoading = false;
             },
             error: function() {
-                  alert('An error occurred while liking the event.');
+              isLoading = false;
+              alert('Đã xảy ra lỗi khi tải dữ liệu.');
             }
-         });
-      });
-   });
+          });
+        }
+      }
+    });
 </script>
 {% endblock %}

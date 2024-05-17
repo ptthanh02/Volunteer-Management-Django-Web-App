@@ -31,16 +31,24 @@
   color: #dbba57;
   transition: color 0.5s ease;
   transform: none;
+  z-index: 1;
 }
 
-.custom-nav-link:hover::after,
-.custom-nav-link.active::after {
+.custom-nav-link:hover::after {
   background-color: #e0a362;
   height: 3px;
+  z-index: 1;
 }
 
 .custom-nav-link.active {
-  color: #e0a362 !important;
+  color: #dbba57;
+  z-index: 1;
+}
+
+.custom-nav-link.active::after {
+  background-color: #dbba57;
+  height: 3px;
+  z-index: 1;
 }
 
 /* ----------------- post ----------------- */
@@ -101,7 +109,6 @@ h5.card-title {
   border-radius: 25px;
   transition: background-color 0.3s ease;
   font-weight: bold;
-  float : right;
   margin-bottom: 15px;
 }
 
@@ -131,3 +138,84 @@ h5.card-title {
   transform: scale(0.98);
 }
 
+.viewsBtn {
+  color: #dbba57;
+  background-color: transparent;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 25px;
+  transition: background-color 0.3s ease;
+  float : right;
+  margin-bottom: 15px;
+  font-weight: bold;
+}
+
+/*----------------- search-box -----------------*/
+
+.search-box-c {
+  background-color: #fff;
+  border-radius: 25px;
+  padding: 5px 10px;
+  padding-top: 6px;
+  border: none;
+  transition: box-shadow 0.3s ease;
+  display: flex;
+  align-items: center;
+  margin-right: 20px;
+  width: 600px;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+  margin : 0 auto;
+}
+
+.search-txt-c {
+  background-color: #fff;
+  border-radius: 25px;
+  padding: 5px 10px;
+  border: none;
+  outline: none;
+  width: 700px;
+}
+
+.search-btn-c {
+  border: none;
+  padding: 5px 10px;
+  border-radius: 25px;
+  transition: background-color 0.3s ease;
+  color: #464c58;
+}
+
+.search-btn-c:hover {
+  background-color: #f1f1f1;
+  color: #464c58;
+}
+
+.search-btn-c:focus {
+  box-shadow: none;
+}
+/* ----------------- filter ----------------- */
+
+.filter-row {
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.filter-row .select {
+  margin-right: 10px;
+  width: 200px;
+}
+
+.form-elements {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.form-elements > * {
+  margin-right: 10px;
+}
+
+.search-and-filter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

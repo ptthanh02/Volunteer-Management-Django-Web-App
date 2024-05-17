@@ -1,0 +1,51 @@
+{% for event in event_posts %}
+<div class="col col-md-4 mb-4">
+   <div class="card">
+      <img src="{{ event.cover.url }}" alt="{{ event.name }}" style="object-fit: cover;">
+      <div class="card-content">
+         <div class="row">
+            <h5 class="card-title">{{ event.name }}</h5>
+            <div class="col-5">
+               <p><i class="fa-solid fa-calendar-days"></i> {{ event.start_date|date:"d/m/Y" }}</p>
+               <hr>
+               <i class="fas fa-users"></i> {{ event.current_participants }}/{{ event.max_participants }}</p>
+               <hr>
+               <p><i class="fa-solid fa-location-dot"></i>{{ event.location }}</p>
+            </div>
+            <div class="col-1" style="padding: 0; width: 12px;">
+               <div class="vl"></div>
+            </div>
+            <div class="col-6" style="padding-left: 0;">
+               <div class="short-description">
+                  <p>
+                     {{ event.description|striptags|truncatewords:100 }}
+                  </p>
+               </div>
+            </div>
+            <div class="d-flex align-items-center" style="padding-top: 10px;">
+               <div class="d-flex align-items-center">
+                   <button type="button" class="btn-detail-post likeBtn me-2" id="likeBtn" data-event-id="{{ event.id }}" style="background-color: transparent; border: none; color: red; padding: 0; margin-right: 25px; font-weight: 500;">
+                       {% if event.liked %}
+                       <img src="https://cdn-icons-png.flaticon.com/512/14533/14533613.png " alt="heart" style="width: 24px; height: 24px;">
+                       {% else %}
+                       <img src="https://cdn-icons-png.flaticon.com/512/2832/2832478.png " alt="heart" style="width: 24px; height: 24px;">
+                       {% endif %}
+                       <span class="likes-count">{{ event.likes }}</span>
+                   </button>
+                   <button type="button" class="btn-detail-post shareBtn" data-event-id="{{ event.id }}" data-bs-toggle="modal" data-bs-target="#shareModal{{ event.id }}" style="background-color: transparent; border: none; color: #0095ff; padding: 0; font-weight: 500;">
+                     <img src="https://cdn-icons-png.flaticon.com/512/929/929468.png " alt="share" style="width: 24px; height: 24px;">
+                       <span class="share-count">{{ event.shares }}</span>
+                   </button>
+               </div>
+               <div class="ms-auto">
+                  <button class="btn-detail-post" onclick="window.location.href='{% url 'event_detail' event.id %}'">Xem Chi Tiết</button>
+               </div>
+           </div>
+         </div>
+      </div>
+   </div>
+</div>
+{% include "activities_includes\share_modal.html" %}
+{% empty %}
+<h4 class="text-center mb-4 observe-slide-up">Không tìm thấy sự kiện nào. <i class="far fa-sad-tear"></i></h4>
+{% endfor %}

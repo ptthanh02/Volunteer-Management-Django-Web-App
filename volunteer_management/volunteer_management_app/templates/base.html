@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,117 +12,116 @@
     <!-- Animate CSS 4.1.1 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="../static/css/base.css">
-    <link rel="stylesheet" href="../static/css/modal.css">
-    <link rel="shortcut icon" href="../static/images/Logo-IUH.jpg" type="image/x-icon">
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="stylesheet" href="{% static 'css/modal.css'%}">
+    <link rel="shortcut icon" href="{% static 'images/Logo-IUH.jpg' %}" type="image/x-icon">
 </head>
 <body>
     <header>
         <!-- Navbar -->
         <nav class="navbar navbar-expand-lg navbar-dark fixed-top gradient-custom">
-            
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarTogglerDemo01" style="padding-left: 64px; margin-left: 55px;">
-                    <!-- Navbar brand -->
-                    <a class="navbar-brand mt-2 mt-lg-0" href={% url 'homepage' %}>
-                        <img src="../static/images/Logo-DTN-HSV-truong-trang.png"
-                             width="285"
-                             height="50"
-                             class="d-inline-block align-top"
-                             alt="">
-                    </a>
-                    <!-- Left links -->
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        {% if request.path == '/trang-chu/' %}
-                        <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href={% url 'homepage' %}><i class="fas fa-home"></i> Trang chủ</a>
-                        </li>
-                        {% else %}
-                        <li class="nav-item">
-                            <a class="nav-link" href={% url 'homepage' %}><i class="fas fa-home"></i> Trang chủ</a>
-                        </li>
-                        {% endif %}
-                        {% if request.path == '/hoat-dong/' %}
-                        <li class="nav-item">
-                            <a class="nav-link active" href={% url 'activities' %}><i class="fas fa-tasks"></i> Hoạt động</a>
-                        </li>
-                        {% else %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'activities' %}"><i class="fas fa-tasks"></i> Hoạt động</a>
-                        </li>
-                        {% endif %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="#"><i class="fas fa-hand-holding-heart"></i> Quyên góp</a>
-                        </li>
-                    </ul>
-                    <!-- Left links -->
-                    <a class="text-reset" style="text-decoration: none;">
-                        <div class ="search-box" id="search-box">
-                            <input type="search" class="search-txt" placeholder="Tìm kiếm" appearance="none">
-                            <a class="search-btn">
-                                <i class="fas fa-search"></i>
-                            </a>
-                        </div>
-                    </a>
-                </div>
-            {% if request.user.is_anonymous %}
-            <a class="text-reset" style = "padding-top: 2px;">
-                <button type="button" class="btn-signup" data-bs-toggle="modal" data-bs-target="#loginModal" href="#">Đăng nhập</button>
-            </a>
-            {% else %}
-            <span class="user-name">{{ request.user.name }}</span>
-            <div class="dropdown">
-                <div class="user-info" data-bs-display="static" aria-expanded="false">
-                    <div class="user-avatar-container">
-                        <img src="{{ request.user.avatar.url }}" alt="Avatar" class="avatar-img">
-                    </div>
-                </div>
-                <ul class="dropdown-menu animate__animated animate__fadeInDown dropdown-menu-click-disabled">
-                    <li><a class="dropdown-item" href="#"><i class="fas fa-user"></i> Thông tin cá nhân</a></li>
-                    <li><a class="dropdown-item" href="#"><i class="fas fa-cog"></i> Đổi mật khẩu</a></li>
-                    <li><a class="dropdown-item" href="{% url 'user_logout' %}"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a></li>
-                    {% comment %} <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item" href="#"><i class="fas fa-cog"></i> Cài đặt</a></li> {% endcomment %}
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarTogglerDemo01" style="padding-left: 64px; margin-left: 55px;">
+                <!-- Navbar brand -->
+                <a class="navbar-brand mt-2 mt-lg-0" href={% url 'homepage' %}>
+                    <img src="{% static 'images/Logo-DTN-HSV-truong-trang.png' %}"
+                            width="285"
+                            height="50"
+                            class="d-inline-block align-top"
+                            alt="">
+                </a>
+                <!-- Left links -->
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    {% if request.path == '/trang-chu/' %}
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href={% url 'homepage' %}><i class="fas fa-home"></i> Trang chủ</a>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href={% url 'homepage' %}><i class="fas fa-home"></i> Trang chủ</a>
+                    </li>
+                    {% endif %}
+                    {% if request.path == '/hoat-dong/' %}
+                    <li class="nav-item">
+                        <a class="nav-link active" href={% url 'activities' %}><i class="fas fa-tasks"></i> Hoạt động</a>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'activities' %}"><i class="fas fa-tasks"></i> Hoạt động</a>
+                    </li>
+                    {% endif %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="fas fa-hand-holding-heart"></i> Quyên góp</a>
+                    </li>
                 </ul>
-            </div>
-            {% endif %}
-            <div style="padding-right: 20px; padding-left: 12px;">
-                <button class="toggle-button text-reset me-3" id="toggle-mode" >
-                    <img src="../static/images/sun.png"
-                        width="25"
-                        height="25"
-                        alt=""
-                        class="toggle-icon"
-                    >
-                </button>
+                <!-- Left links -->
+                <a class="text-reset" style="text-decoration: none;">
+                    <div class ="search-box" id="search-box">
+                        <input type="search" class="search-txt" placeholder="Tìm kiếm" appearance="none">
+                        <a class="search-btn">
+                            <i class="fas fa-search"></i>
+                        </a>
+                    </div>
+                </a>
+                {% if request.user.is_anonymous %}
+                <a class="text-reset" style = "padding-top: 2px;">
+                    <button type="button" class="btn-signup" data-bs-toggle="modal" data-bs-target="#loginModal" href="#">Đăng nhập</button>
+                </a>
+                {% else %}
+                <span class="user-name">{{ request.user.name }}</span>
+                <div class="dropdown">
+                    <div class="user-info" data-bs-display="static" aria-expanded="false">
+                        <div class="user-avatar-container">
+                            <img src="{{ request.user.avatar.url }}" alt="Avatar" class="avatar-img">
+                        </div>
+                    </div>
+                    <ul class="dropdown-menu animate__animated animate__fadeInDown dropdown-menu-click-disabled">
+                        <li><a class="dropdown-item" href="#"><i class="fas fa-user"></i> Thông tin cá nhân</a></li>
+                        <li><a class="dropdown-item" href="#"><i class="fas fa-cog"></i> Đổi mật khẩu</a></li>
+                        <li><a class="dropdown-item" href="{% url 'user_logout' %}"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a></li>
+                        {% comment %} <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="#"><i class="fas fa-cog"></i> Cài đặt</a></li> {% endcomment %}
+                    </ul>
+                </div>
+                {% endif %}
+                <div style="padding-right: 20px; padding-left: 12px;">
+                    <button class="toggle-button text-reset me-3" id="toggle-mode" >
+                        <img src="{% static 'images/sun.png' %}"
+                            width="25"
+                            height="25"
+                            alt=""
+                            class="toggle-icon"
+                        >
+                    </button>
+                </div>
             </div>
         </nav>
         <!-- Navbar -->
     </header>
-    <main style="padding-top: 82px;">
-        {% include "base_extra\register_modal.html" %}
-        {% include "base_extra\login_modal.html" %}
+    <main style="padding-top: 82px;" class="content">
+        {% include "base_includes\register_modal.html" %}
+        {% include "base_includes\login_modal.html" %}
         {% block content %}
 
         {% endblock %}
     </main>
+    <footer class="bg-dark text-white py-3">
+        <div class="container">
+            <div class="row">
+            <div class="col-md-6">
+                <p>&copy; 2024 Tình Nguyện IUH. Đã đăng ký bản quyền.</p>
+            </div>
+            <div class="col-md-6 text-md-right">
+                <a href="#" class="text-white mr-3">Facebook</a>
+                <a href="#" class="text-white mr-3">Twitter</a>
+                <a href="#" class="text-white">Instagram</a>
+            </div>
+            </div>
+        </div>
+    </footer>
 </body>
-<footer class="bg-dark text-white py-3">
-    <div class="container">
-        <div class="row">
-        <div class="col-md-6">
-            <p>&copy; 2024 Tình Nguyện IUH. Đã đăng ký bản quyền.</p>
-        </div>
-        <div class="col-md-6 text-md-right">
-            <a href="#" class="text-white mr-3">Facebook</a>
-            <a href="#" class="text-white mr-3">Twitter</a>
-            <a href="#" class="text-white">Instagram</a>
-        </div>
-        </div>
-    </div>
-</footer>
 </html>
 {% block script %}
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
@@ -212,14 +212,14 @@ toggleModeButton.addEventListener('click', function() {
         document.body.classList.remove('light-mode');
         //document.querySelector('.navbar').classList.add('navbar-dark');
         //document.querySelector('.navbar').classList.remove('navbar-light');
-        document.querySelector('.toggle-icon').src = '../static/images/moon.png';
+        document.querySelector('.toggle-icon').src = '{% static 'images/moon.png' %}';
         currentMode = 'dark-mode';
       } else {
         document.body.classList.add('light-mode');
         document.body.classList.remove('dark-mode');
         //document.querySelector('.navbar').classList.add('navbar-light');
         //document.querySelector('.navbar').classList.remove('navbar-dark');
-        document.querySelector('.toggle-icon').src = '../static/images/sun.png';
+        document.querySelector('.toggle-icon').src = '{% static 'images/sun.png' %}';
         currentMode = 'light-mode';
       }
 });
