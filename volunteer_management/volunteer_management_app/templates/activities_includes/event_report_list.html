@@ -4,7 +4,7 @@
       <img src="{{ event.cover.url }}" alt="{{ event.name }}" style="object-fit: cover;">
       <div class="card-content">
          <div class="row">
-            <h5 class="card-title">{{ event.name }}</h5>
+            <h5 class="card-title">[#{{ event.id }}]: {{ event.name }}</h5>
             <div class="col-5">
                <p><i class="fa-solid fa-calendar-days"></i> {{ event.start_date|date:"d/m/Y" }}</p>
                <hr>
@@ -38,6 +38,9 @@
                    </button>
                </div>
                <div class="ms-auto">
+                  {% if user.is_superuser %}
+                     <button class="btn-detail-post" onclick="window.location.href='{% url 'activity_report_detail' event.id %}'">Báo Cáo</button>
+                  {% endif %}
                   <button class="btn-detail-post" onclick="window.location.href='{% url 'event_detail' event.id %}'">Chi Tiết</button>
                </div>
            </div>

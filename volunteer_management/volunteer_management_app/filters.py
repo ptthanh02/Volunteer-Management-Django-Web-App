@@ -1,5 +1,5 @@
 import django_filters
-from .models import VolunteerEventPost
+from .models import *
 
 class VolunteerEventPostFilter(django_filters.FilterSet):
     category = django_filters.ChoiceFilter(choices=VolunteerEventPost.CATEGORY_CHOICES)

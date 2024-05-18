@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+<div class="container" style="padding-top: 60px; padding-bottom: 50px">
+    <h2 style="color: #dbba57" class="text-center mb-4 observe-slide-up">
+        Quyên Góp Duy Trì Hoạt Động Tình Nguyện
+    </h2>
+    <p class="lead text-center observe-slide-up">Hãy đóng góp để giúp chúng tôi duy trì các hoạt động tình nguyện và mang lại nhiều lợi ích cho cộng đồng.</p>
+    <div class="text-center mb-4 observe-slide-up">
+        <img src="{% static 'images/qr.jpg' %}" alt="Mã QR Thanh Toán" class="img-fluid" style="max-width: 200px;">
+    </div>
+    <p class="text-center observe-slide-up">Quét mã QR để quyên góp</p>
+    <p class="text-center observe-slide-up">Hoặc chuyển khoản qua số tài khoản: 1234 5678 9012 3456</p>
+    <p class="text-center observe-slide-up">Tên chủ tài khoản: Hội Tình Nguyện IUH</p>
+    <p class="text-center observe-slide-up">Ngân hàng: Ngân hàng TMCP Ngoại Thương Việt Nam (Vietcombank)</p>
+    <div class="progress mb-4 observe-slide-up" style="width: 50%; margin: 0 auto; height: 40px; border-radius: 25px;">
+        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
+    </div>
+    <div class="text-center observe-slide-up">
+        <h4>Số tiền đã quyên góp: <span id="donated-amount">0</span> VND</h4>
+        <h4>Mục tiêu: 500,000,000 VND</h4>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+<script>
+$(document).ready(function() {
+    var donatedAmount = 50000000;
+    var targetAmount = 500000000;
+    var progressBar = $('.progress-bar');
+    
+    // Hàm cập nhật tiến trình quyên góp
+    function updateProgress() {
+        var progress = (donatedAmount / targetAmount) * 100;
+        progressBar.css('width', progress + '%').attr('aria-valuenow', progress);
+        $('#donated-amount').text(donatedAmount.toLocaleString());
+    }
+    
+    // Hàm xử lý thanh toán qua mã QR
+    function handleQRPayment() {
+        // Mô phỏng quá trình thanh toán
+        var randomAmount = Math.floor(Math.random() * 5000000) + 1;
+        donatedAmount += randomAmount;
+        updateProgress();
+    }
+    
+    // Gọi hàm xử lý thanh toán mỗi 5 giây (để mô phỏng)
+    setInterval(handleQRPayment, 5000);
+    });
+</script>
+{% endblock %}

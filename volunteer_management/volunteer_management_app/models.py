@@ -197,8 +197,6 @@ class EventReport(models.Model):
         #     raise ValidationError(_('Số người tham gia không thể lớn hơn số người tham gia hiện tại của sự kiện.'))
         if self.event.status != 'completed':
             raise ValidationError(_('Chỉ có thể báo cáo khi sự kiện đã kết thúc.'))
-        if self.event.organizer != self.author:
-            raise ValidationError(_('Chỉ người tổ chức sự kiện mới có thể tạo báo cáo.'))
         if self in self.event.reports.all():
             raise ValidationError(_('Báo cáo này đã tồn tại.'))
 

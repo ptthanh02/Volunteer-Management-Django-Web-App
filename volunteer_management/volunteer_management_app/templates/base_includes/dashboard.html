@@ -1,0 +1,162 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+    .accent-color {
+        color: #dbba57;
+    }
+</style>
+
+<div class="container my-5">
+    <h3 class="accent-color">Tổng số sự kiện</h3>
+    {% for status in event_status_counts %}
+    {{ status.status_display }} - {{ status.count }}<br>
+    {% endfor %}
+    <h1 class="text-center accent-color"><i class="fas fa-chart-line"></i> Dashboard Hoạt Động Tình Nguyện IUH</h1>
+
+    <div class="row mt-5">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header text-white" style="background-color: #2c2c3c; text-align: center;"> 
+                    <h3 class="mb-0"><i class="fas fa-calendar-alt"></i> Số lượng sự kiện theo trạng thái</h3>
+                </div>
+                <div class="card-body">
+                    <canvas id="eventStatusChart"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header text-white" style="background-color: #2c2c3c; text-align: center;">
+                    <h3 class="mb-0"><i class="fas fa-users"></i> Số lượng người dùng</h3>
+                </div>
+                <div class="card-body">
+                    <canvas id="userStatusChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-5">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header text-white" style="background-color: #2c2c3c; text-align: center;">
+                    <h3 class="mb-0"><i class="fas fa-file-alt"></i> Số lượng báo cáo sự kiện theo tháng</h3>
+                </div>
+                <div class="card-body">
+                    <canvas id="reportCountChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Biểu đồ số lượng sự kiện theo trạng thái
+    var eventStatusData = {
+        labels: [{% for status in event_status_counts %}'{{ status.status_display }}',{% endfor %}],
+        datasets: [{
+            data: [{% for status in event_status_counts %}{{ status.count }},{% endfor %}],
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)'
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)'
+            ],
+            borderWidth: 1
+        }]
+
+    };
+    var eventStatusChart = new Chart(document.getElementById('eventStatusChart'), {
+        type: 'bar',
+        data: eventStatusData,
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            },
+            plugins: {
+                legend: {
+                    display: true // Ẩn legend (chú thích) của biểu đồ
+                }
+            },
+        },
+    });
+
+    // Biểu đồ số lượng người dùng theo quản trị viên và  người dùng thông thường
+    var userStatusData = {
+        labels: [{% for status in user_status_counts %}'{{ status.status }}',{% endfor %}],
+        datasets: [{
+            data: [{% for status in user_status_counts %}{{ status.count }},{% endfor %}],
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)'
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)'
+            ],
+            borderWidth: 1
+        }]
+    };
+    var userStatusChart = new Chart(document.getElementById('userStatusChart'), {
+        type: 'pie',
+        data: userStatusData,
+        options: {
+            responsive: true,
+            maintainAspectRatio: false
+        }
+    });
+
+    // Biểu đồ số lượng báo cáo sự kiện theo tháng
+    var reportCountData = {
+        labels: [{% for report in report_counts_by_month %}'Tháng {{ report.month }}',{% endfor %}],
+        datasets: [{
+            data: [{% for report in report_counts_by_month %}{{ report.count }},{% endfor %}],
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)'
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 1
+        }]
+    };
+    var reportCountChart = new Chart(document.getElementById('reportCountChart'), {
+        type: 'line',
+        data: reportCountData,
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        },
+        plugins: {
+            legend: {
+                display: true
+            }
+        },
+        responsive: true,
+        maintainAspectRatio: false
+    });
+</script>
+
+{% endblock %}

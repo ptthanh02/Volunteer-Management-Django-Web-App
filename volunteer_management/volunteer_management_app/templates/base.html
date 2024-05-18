@@ -45,16 +45,22 @@
                     {% endif %}
                     {% if request.path == '/hoat-dong/' %}
                     <li class="nav-item">
-                        <a class="nav-link active" href={% url 'activities' %}><i class="fas fa-tasks"></i> Hoạt động</a>
+                        <a class="nav-link active" href="{% url 'activities' %}"><i class="fas fa-tasks"></i> Hoạt động</a>
                     </li>
                     {% else %}
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'activities' %}"><i class="fas fa-tasks"></i> Hoạt động</a>
                     </li>
                     {% endif %}
+                    {% if request.path == '/quyen-gop/' %}
                     <li class="nav-item">
-                        <a class="nav-link" href="#"><i class="fas fa-hand-holding-heart"></i> Quyên góp</a>
+                        <a class="nav-link active" href="{% url 'donation' %}"><i class="fas fa-hand-holding-heart"></i> Quyên góp</a>
                     </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'donation' %}"><i class="fas fa-hand-holding-heart"></i> Quyên góp</a>
+                    </li>
+                    {% endif %}
                 </ul>
                 <!-- Left links -->
                 <a class="text-reset" style="text-decoration: none;">
@@ -78,11 +84,19 @@
                         </div>
                     </div>
                     <ul class="dropdown-menu animate__animated animate__fadeInDown dropdown-menu-click-disabled">
-                        <li><a class="dropdown-item" href="#"><i class="fas fa-user"></i> Thông tin cá nhân</a></li>
-                        <li><a class="dropdown-item" href="#"><i class="fas fa-cog"></i> Đổi mật khẩu</a></li>
+                        <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#updateProfileModal">
+                            <i class="fas fa-user"></i> Thông tin cá nhân
+                        </a>
+                        <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#changePasswordModal">
+                            <i class="fas fa-cog"></i> Đổi mật khẩu
+                        </a>
                         <li><a class="dropdown-item" href="{% url 'user_logout' %}"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a></li>
-                        {% comment %} <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="#"><i class="fas fa-cog"></i> Cài đặt</a></li> {% endcomment %}
+                        {% if request.user.is_superuser %}
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="{% url 'admin:index' %}"><i class="fa-solid fa-user-tie"></i> Trang quản trị</a></li>
+                            <li><a class="dropdown-item" href="{% url 'activity_reports' %}"><i class="fa-solid fa-clipboard"></i> Báo cáo hoạt động</a></li>
+                            <li><a class="dropdown-item" href="{% url 'dashboard' %}"><i class="fa-solid fa-chart-line"></i> Báo cáo thống kê</a></li>
+                        {% endif %}
                     </ul>
                 </div>
                 {% endif %}
@@ -103,6 +117,8 @@
     <main style="padding-top: 82px;" class="content">
         {% include "base_includes\register_modal.html" %}
         {% include "base_includes\login_modal.html" %}
+        {% include "base_includes\person_info_modal.html" %}
+        {% include "base_includes\changes_password_modal.html" %}
         {% block content %}
 
         {% endblock %}
@@ -114,9 +130,9 @@
                 <p>&copy; 2024 Tình Nguyện IUH. Đã đăng ký bản quyền.</p>
             </div>
             <div class="col-md-6 text-md-right">
-                <a href="#" class="text-white mr-3">Facebook</a>
-                <a href="#" class="text-white mr-3">Twitter</a>
-                <a href="#" class="text-white">Instagram</a>
+                <a href="https://www.facebook.com/ptthanh.02" class="text-white mr-3">Facebook</a>
+                <a href="https://twitter.com/ptthanh02" class="text-white mr-3">Twitter</a>
+                <a href="https://www.instagram.com/ptthanh.02/" class="text-white">Instagram</a>
             </div>
             </div>
         </div>
@@ -142,46 +158,81 @@
 
         // registerModal
         $(document).ready(function () {
-        {% if show_register_form and messages %}
-            $("#registerModal").modal("show");
-        {% endif %} 
+            {% if show_register_form and messages %}
+                $("#registerModal").modal("show");
+            {% endif %} 
+    
+            {% if register_sucess and messages %}
+                $("#registerModal").modal("show");
+            {% endif %}
+            });
+    
+            $(document).ready(function () {
+            $("#registerModal").on("hidden.bs.modal", function (e) {
+                window.location.href = '#';
+            });
+            });
+        // updateProfileModal
+        $('#updateProfileBtn').click(function() {
+            var formData = {
+                'name': $('#upd_name').val(),
+                'age': $('#upd_age').val(),
+                'email': $('#upd_email').val(),
+                'phone': $('#upd_phone').val(),
+                'address': $('#upd_address').val(),
+                'skills': $('#upd_skills').val(),
+                'csrfmiddlewaretoken': '{{ csrf_token }}'
+            };
 
-        {% if register_sucess and messages %}
-            $("#registerModal").modal("show");
-        {% endif %}
+            console.log(formData);
+        
+            $.ajax({
+                type: 'POST',
+                url: '{% url "update_profile" %}',
+                data: formData,
+                success: function(data) {
+                    if (data.success) {
+                        alert(data.message);
+                        $('#updateProfileModal').modal('hide');
+                    } else {
+                        var errorHtml = '';
+                        for (var key in data.errors) {
+                            errorHtml += '<p>' + data.errors[key] + '</p>';
+                        }
+                        $('#updateProfileModal .modal-body').append('<div class="alert alert-danger">' + errorHtml + '</div>');
+                    }
+                }
+            });
         });
 
-        $(document).ready(function () {
-        $("#registerModal").on("hidden.bs.modal", function (e) {
-            window.location.href = '#';
+        // changePasswordModal
+        $('#changePasswordBtn').click(function() {
+            var formData = {
+                'old_password': $('#change_old_password').val(),
+                'new_password1': $('#change_new_password').val(),
+                'new_password2': $('#change_confirm_password').val(),
+                'csrfmiddlewaretoken': '{{ csrf_token }}'
+            };
+        
+            $.ajax({
+                type: 'POST',
+                url: '{% url "change_password" %}',
+                data: formData,
+                success: function(data) {
+                    if (data.success) {
+                        alert(data.message);
+                        $('#changePasswordModal').modal('hide');
+                    } else {
+                        var errorHtml = '';
+                        for (var key in data.errors) {
+                            errorHtml += '<p>' + data.errors[key] + '</p>';
+                        }
+                        $('#changePasswordModal .modal-body').append('<div class="alert alert-danger">' + errorHtml + '</div>');
+                    }
+                }
+            });
         });
-        });
-    </script>
-    <script>
-        window.onload = function() {
-          $('.btn-submit-modal').on('click', function() {
-              const nameInput = document.getElementById('nameInput');
-              const ageInput = document.getElementById('ageInput');
-              const emailInput = document.getElementById('emailInput');
-              const phoneInput = document.getElementById('phoneInput');
-      
-              const modalNameInput = document.getElementById('name');
-              const modalAgeInput = document.getElementById('age');
-              const modalEmailInput = document.getElementById('email');
-              const modalPhoneInput = document.getElementById('phone');
-      
-              console.log(nameInput.value);
-              console.log(ageInput.value);
-              console.log(emailInput.value);
-              console.log(phoneInput.value);
-      
-              modalNameInput.value = nameInput.value;
-              modalAgeInput.value = ageInput.value;
-              modalEmailInput.value = emailInput.value;
-              modalPhoneInput.value = phoneInput.value;
-          });
-      };
-      </script>
+</script>
 {% endblock %}
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>

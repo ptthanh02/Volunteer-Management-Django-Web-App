@@ -33,7 +33,15 @@
             {% if event.is_user_attended %}
               <button class="btn-detail-post" style="background-color: #28a745; color: #fff;" disabled>Đã tham gia</button>
               {% else %}
-                <button class="btn-detail-post join-btn" data-event-id="{{ event.id }}">Tham gia</button>
+                {% if event.status != 'planned' %}
+                  <button class="btn-detail-post" style="background-color: #dc3545; color: #fff;" disabled>Sự kiện không còn mở đăng ký</button>
+                {% elif event.status == 'completed' %}
+                  <button class="btn-detail-post" style="background-color: #dc3545; color: #fff;" disabled>Sự kiện đã kết thúc</button>
+                {% elif event.current_participants >= event.max_participants %}
+                  <button class="btn-detail-post" style="background-color: #dc3545; color: #fff;" disabled>Sự kiện đã đủ người tham gia</button>
+                {% else %}
+                  <button class="btn-detail-post join-btn" data-event-id="{{ event.id }}">Tham gia</button>
+                {% endif %}
               {% endif %}
           {% else %}
             <a href="{% url 'login' %}" class="btn-detail-post">Đăng nhập để tham gia</a>
@@ -80,13 +88,14 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
   $(document).ready(function() {
+
     var likesCount = $('.like-count');
       $('.likeBtn').click(function() {
           var eventId = $(this).data('event-id');
           var csrfToken = "{{ csrf_token }}";
 
           $.ajax({
-              url: "{% url 'like_event_detail' %}",
+              url: "{% url 'like_event' %}",
               type: "POST",
               data: {
                   'event_id': eventId,

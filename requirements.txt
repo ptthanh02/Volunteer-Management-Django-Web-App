@@ -5,4 +5,3 @@ crispy-bootstrap5==2024.2
 django-filter==24.1
 django-ckeditor-5==0.2.13
 django-jazzmin==3.0.0
-

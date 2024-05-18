@@ -4,7 +4,11 @@
 <link rel="stylesheet" href="../static/css/activities.css" />
 <div class="container" style="padding-top: 80px; padding-bottom: 50px">
    <h2 style="color: #dbba57" class="text-center mb-4 observe-slide-up">
+      {% if request.path == '/bao-cao-hoat-dong/' %}
+      Báo Cáo Hoạt Động Tình Nguyện
+      {% else %}
       Hoạt Động Tình Nguyện Của Bạn
+      {% endif %}
    </h2>
    <div class="text-reset observe-slide-up" style="text-decoration: none;">
     <div class="search-and-filter">
@@ -37,6 +41,9 @@
          <li class="nav-item custom-nav-item">
             <a href="#" class="nav-link custom-nav-link" data-filter="liked">Đã Yêu Thích ({{ liked_events.count }})</a>
          </li>
+         <li class="nav-item custom-nav-item">
+          <a href="#" class="nav-link custom-nav-link" data-filter="recommended">Dành Cho Bạn</a>
+      </li>
       </ul>
    </nav>
   <div class="row" id="event-list">
@@ -44,7 +51,7 @@
     <div class="col col-md-4 mb-4">
     </div>
     {% empty %}
-    <h4 class="text-center mb-4 observe-slide-up">Không tìm thấy sự kiện nào. <i class="far fa-sad-tear"></i></h4>
+    <h4 class="text-center mb-4 observe-slide-up">Không tìm thấy hoạt động nào. <i class="far fa-sad-tear"></i></h4>
     {% endfor %}
  </div>
 </div>
@@ -61,6 +68,12 @@
         $('.custom-nav-link').removeClass('active');
         $(this).addClass('active');
       });
+
+      function updateNavbarCounts(likedCount, joinedCount, notJoinedCount) {
+        $('.custom-nav-link[data-filter="liked"]').text('Đã Yêu Thích (' + likedCount + ')');
+        $('.custom-nav-link[data-filter="joined"]').text('Đã Tham Gia (' + joinedCount + ')');
+        $('.custom-nav-link[data-filter="not-joined"]').text('Chưa Tham Gia (' + notJoinedCount + ')');
+      }
     
       function loadEventList(filter) {
         var filterData = $('form').serialize();
@@ -88,9 +101,11 @@
                   if (data.liked) {
                     likesCount.text(data.likes);
                     likeBtn.find('img').attr('src', 'https://cdn-icons-png.flaticon.com/512/14533/14533613.png');
+                    updateNavbarCounts(data.liked_count, data.joined_count, data.not_joined_count);
                   } else {
                     likesCount.text(data.likes);
                     likeBtn.find('img').attr('src', 'https://cdn-icons-png.flaticon.com/512/2832/2832478.png');
+                    updateNavbarCounts(data.liked_count, data.joined_count, data.not_joined_count);
                   }
                 },
                 error: function() {

@@ -84,10 +84,36 @@
                   </div>
                </div>
             </div>
-            <a href="#" style="color: #dbba57;">Điều khoản và Điều kiện</a>
-            <button type="button" class="btn-detail-post" data-bs-toggle="modal" data-bs-target="#registerModal">Đăng ký</button>
+            {% include 'homepage_includes/terms_modal.html' %}
+            <a href="#" data-bs-toggle="modal" data-bs-target="#termsModal" style="color: #dbba57;">Điều khoản và Điều kiện</a>
+            <button type="button" class="btn-detail-post submit-info" data-bs-toggle="modal" data-bs-target="#registerModal">Đăng ký</button>
          </div>
       </div>
    </div>
 </section>
+<script>
+window.onload = function() {
+   $('.submit-info').on('click', function() {
+      const nameInput = document.getElementById('nameInput');
+      const ageInput = document.getElementById('ageInput');
+      const emailInput = document.getElementById('emailInput');
+      const phoneInput = document.getElementById('phoneInput');
+
+      const modalNameInput = document.getElementById('res-name');
+      const modalAgeInput = document.getElementById('res-age');
+      const modalEmailInput = document.getElementById('res-email');
+      const modalPhoneInput = document.getElementById('res-phone');
+
+      console.log(nameInput.value);
+      console.log(ageInput.value);
+      console.log(emailInput.value);
+      console.log(phoneInput.value);
+
+      modalNameInput.value = nameInput.value;
+      modalAgeInput.value = ageInput.value;
+      modalEmailInput.value = emailInput.value;
+      modalPhoneInput.value = phoneInput.value;
+   });
+};
+</script>
 {% endblock %}

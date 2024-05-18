@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<link rel="stylesheet" href="{% static '/css/event_detail.css' %}">
+<div class="container" style="padding-top: 80px; padding-bottom: 50px">
+  <div class="row">
+    <div class="col-md-8">
+      <div class="event-detail">
+        {% if not report %}
+        <h4 class="text-center mb-4 observe-slide-up">Hoạt động tình nguyện này chưa có báo cáo <i class="far fa-sad-tear"></i></h4>
+        {% else %}
+        <h1 class="event-title">[Báo Cáo]: {{ event.name }}</h1>
+        <div class="event-cover">
+          <img src="{{ event.cover.url }}" alt="{{ event.name }}" class="img-fluid">
+        </div>
+        <div class="event-info row">
+          <div class="col-md-6">
+            <p><i class="fas fa-calendar-alt"></i> <strong>Ngày tổ chức:</strong> {{ report.event.start_date|date:"d/m/Y" }}</p>
+            <p><i class="fas fa-calendar-times"></i> <strong>Ngày kết thúc:</strong> {{ report.event.end_date|date:"d/m/Y" }}</p>
+            <p><i class="fas fa-clipboard-list"></i> <strong>Trạng thái:</strong> {{ ereport.vent.get_status_display }}</p>
+            <p><i class="fas fa-map-marker-alt"></i> <strong>Địa điểm:</strong> {{ report.event.location }}</p>
+            <p><i class="fas fa-tag"></i> <strong>Loại sự kiện:</strong> {{ event.get_category_display }}</p>
+          </div> 
+          <div class="col-md-6">
+            <p><i class="fas fa-clock"></i> <strong>Số giờ tình nguyện:</strong> {{ report.event.hours }} giờ</p>
+            <p><i class="fas fa-calendar-alt"></i> <strong>Ngày tạo báo cáo:</strong> {{ report.report_date|date:"d/m/Y" }}</p>
+            <p><i class="fas fa-users"></i> <strong>Số người tham gia thực sự:</strong> {{ report.participants_count }} / {{ report.event.max_participants }}</p>
+            <p><i class="fas fa-user"></i> <strong>Người quản lý hoạt động:</strong> {{ report.author }}</p>
+            <p><i class="fa-solid fa-phone"></i> <strong>Liên hệ:</strong> {{ report.author.phone }}</p>
+          </div>
+        </div>
+        <div class="event-description">
+          <h2>Kết quả đạt được</h2>
+          {{ report.report_content|safe }}
+        </div>
+        {% endif %}
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="event-sidebar">
+        <div class="card mb-4">
+          <div class="card-body">
+            <h5 class="card-title">Thao tác</h5>
+            <a href="{% url 'activity_reports' %}" class="btn btn-light">
+              <i class="fa-solid fa-arrow-left text-primary"></i> Trở về
+            </a>
+            {% if report %}
+            <a href="{% url 'admin_eventreport_change' report.id %}" class="btn btn-light">
+              <i class="fa-solid fa-edit text-danger"></i> Chỉnh sửa
+            </a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

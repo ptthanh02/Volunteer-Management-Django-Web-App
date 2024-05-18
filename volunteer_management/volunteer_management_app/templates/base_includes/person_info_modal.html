@@ -1,0 +1,74 @@
+<div class="modal fade" id="updateProfileModal" tabindex="-1" aria-labelledby="updateProfileModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="updateProfileModalLabel">Cập nhật thông tin cá nhân</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" class="text-white">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="mb-3">
+                        <label for="upd_name" class="form-label"><strong>Tên:</strong></label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="upd_name" value="{{ user.name }}">
+                            <div class="input-group-append">
+                                <span class="input-group-text" style="height: 40px;"><i class="fas fa-user"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="upd_age" class="form-label"><strong>Tuổi:</strong></label>
+                        <div class="input-group">
+                            <input type="number" class="form-control" id="upd_age" value="{{ user.age }}">
+                            <div class="input-group-append">
+                                <span class="input-group-text" style="height: 40px;"><i class="fas fa-birthday-cake"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="upd_email" class="form-label"><strong>Email:</strong></label>
+                        <div class="input-group">
+                            <input type="email" class="form-control" id="upd_email" value="{{ user.email }}">
+                            <div class="input-group-append">
+                                <span class="input-group-text" style="height: 40px;"><i class="fas fa-envelope"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="upd_phone" class="form-label"><strong>Số điện thoại:</strong></label>
+                        <div class="input-group">
+                            <input type="tel" class="form-control" id="upd_phone" value="{{ user.phone }}">
+                            <div class="input-group-append">
+                                <span class="input-group-text" style="height: 40px;"><i class="fas fa-phone"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="upd_address" class="form-label"><strong>Địa chỉ:</strong></label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="upd_address" value="{{ user.address }}">
+                            <div class="input-group-append">
+                                <span class="input-group-text" style="height: 40px;"><i class="fas fa-map-marker-alt"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="upd_skills" class="form-label"><strong>Kỹ năng, sở thích:</strong></label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="upd_skills" value="{{ user.skills }}">
+                            <div class="input-group-append">
+                                <span class="input-group-text" style="height: 40px;"><i class="fas fa-star"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal" style="padding: 10px 20px;border-radius: 5px;">Hủy</button>
+                <button type="button" class="btn-submit-modal" id="updateProfileBtn">Cập nhật</button>
+            </div>
+        </div>
+    </div>
+</div>
