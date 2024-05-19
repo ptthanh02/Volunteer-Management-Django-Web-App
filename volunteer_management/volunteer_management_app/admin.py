@@ -18,6 +18,27 @@ def is_event_organizer(user, event):
         return custom_user == event.organizer
     except User.customuser.RelatedObjectDoesNotExist:
         return False
+    
+class AttendeeInline(admin.TabularInline):
+    model = UserEventRelation
+    extra = 0
+    verbose_name = "Danh sách người đăng ký tham gia"
+    verbose_name_plural = "Danh sách người đăng ký tham gia"
+    fields = ('user',)
+    readonly_fields = ('user',)
+
+    def has_add_permission(self, request, obj=None):
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+    def get_queryset(self, request):
+        queryset = super().get_queryset(request)
+        return queryset.filter(relation_type='attended')
+
+    def user(self, obj):
+        return obj.user.name
 
 class VolunteerEventPostAdmin(admin.ModelAdmin):
     list_display = ['name', 'start_date', 'end_date', 'location', 'hours', 'organizer', 'category', 'status']
@@ -25,6 +46,8 @@ class VolunteerEventPostAdmin(admin.ModelAdmin):
     search_fields = ['name', 'location', 'description']
     ordering = ['-start_date']
     search_fields = ['name', 'location', 'description']
+    
+    inlines = [AttendeeInline]
     
     def staff_users(self, obj):
         User = get_user_model()
@@ -130,7 +153,7 @@ class EventReportAdmin(admin.ModelAdmin):
             'fields': ('event',)
         }),
         ('Chi tiết báo cáo', {
-            'fields': ('report_content', 'participants_count')
+            'fields': ('report_date','report_content', 'participants_count')
         }),
     )
     

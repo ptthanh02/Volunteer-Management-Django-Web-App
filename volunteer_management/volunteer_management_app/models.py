@@ -180,7 +180,7 @@ class AdminUser(CustomUser):
         
 class EventReport(models.Model):
     event = models.ForeignKey(VolunteerEventPost, on_delete=models.CASCADE, related_name='reports', verbose_name=_('Sự kiện'), help_text=_('Chỉ có thể báo cáo những sự kiện đã kết thúc mà đã bạn tổ chức.'), null=False, blank=False)
-    report_date = models.DateField(_('Ngày báo cáo'), auto_now_add=True)
+    report_date = models.DateField(_('Ngày báo cáo'), default=timezone.now, help_text=_('Ngày bạn báo cáo sự kiện này.'), null=False, blank=False)
     participants_count = models.PositiveIntegerField(_('Số người tham gia'), default=0, help_text=_('Số người thực sự đã tham gia sự kiện này. (Có thể biết qua điểm danh)'))  
     report_content = CKEditor5Field(_('Nội dung báo cáo'), config_name='extends')
     author = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='reports', verbose_name=_('Người báo cáo'))
@@ -197,8 +197,8 @@ class EventReport(models.Model):
         #     raise ValidationError(_('Số người tham gia không thể lớn hơn số người tham gia hiện tại của sự kiện.'))
         if self.event.status != 'completed':
             raise ValidationError(_('Chỉ có thể báo cáo khi sự kiện đã kết thúc.'))
-        if self in self.event.reports.all():
-            raise ValidationError(_('Báo cáo này đã tồn tại.'))
+        # if self in self.event.reports.all():
+        #     raise ValidationError(_('Báo cáo này đã tồn tại.'))
 
     def __str__(self):
         return f"Báo cáo sự kiện '{self.event.name}' ngày {self.report_date}"
