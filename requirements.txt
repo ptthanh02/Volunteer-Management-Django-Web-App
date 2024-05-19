@@ -5,3 +5,8 @@ crispy-bootstrap5==2024.2
 django-filter==24.1
 django-ckeditor-5==0.2.13
 django-jazzmin==3.0.0
+numpy==1.26.4
+pandas==2.2.2
+scikit-learn==1.4.2
+pillow==10.2.0
+

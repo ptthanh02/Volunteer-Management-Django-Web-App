@@ -94,7 +94,3 @@ python manage.py shell
 pip freeze > requirements.txt
 ```
 </details>
-
-
-
-

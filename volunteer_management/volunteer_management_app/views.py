@@ -15,9 +15,12 @@ from django.template.loader import render_to_string
 from django.db.models import Q
 from django.shortcuts import reverse
 from .filters import *
+from django.db.models import Count, Q
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
 from django.db.models import Count, Case, When, IntegerField
 
-# hệ thống khuyến nghị dựa trên nội dung (Content-based Recommendation System).
+# kỹ thuật lọc cộng tác (collaborative filtering) và lọc nội dung (content-based filtering).
 def get_recommended_events(user):
     user_liked_events = UserEventRelation.objects.filter(
         user=user,
@@ -30,9 +33,23 @@ def get_recommended_events(user):
         views_count=Count('user_relations', filter=Q(user_relations__relation_type='viewed'))
     ).exclude(id__in=user_liked_events)
 
-    # Tính điểm cho mỗi sự kiện dựa trên số lượng lượt yêu thích, chia sẻ, xem
-    for event in event_scores:
-        event.score = event.likes_count * 0.5 + event.shares_count * 0.3 + event.views_count * 0.2
+    # Kiểm tra nếu người dùng chưa thích bất kỳ sự kiện nào
+    if not user_liked_events:
+        # Sắp xếp các sự kiện theo số lượng lượt yêu thích, chia sẻ, và xem
+        sorted_events = sorted(event_scores, key=lambda x: (x.likes_count, x.shares_count, x.views_count), reverse=True)
+        return sorted_events
+
+    # Tạo một TfidfVectorizer để biểu diễn nội dung sự kiện dưới dạng vector
+    vectorizer = TfidfVectorizer()
+    event_descriptions = [event.description for event in event_scores]
+    event_vectors = vectorizer.fit_transform(event_descriptions)
+
+    # Tính điểm cho mỗi sự kiện dựa trên số lượng lượt yêu thích, chia sẻ, xem và tính tương tự với sự kiện đã thích của người dùng
+    for event, vector in zip(event_scores, event_vectors):
+        liked_events_descriptions = [e.description for e in VolunteerEventPost.objects.filter(id__in=user_liked_events)]
+        liked_events_vectors = vectorizer.transform(liked_events_descriptions)
+        content_similarity = cosine_similarity(vector, liked_events_vectors).mean() if liked_events_vectors.nnz > 0 else 0
+        event.score = event.likes_count * 0.4 + event.shares_count * 0.3 + event.views_count * 0.2 + content_similarity * 0.1
 
     # Sắp xếp các sự kiện theo điểm giảm dần
     sorted_events = sorted(event_scores, key=lambda x: x.score, reverse=True)
